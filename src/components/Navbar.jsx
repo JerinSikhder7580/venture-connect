@@ -101,7 +101,7 @@ z-50
           md:flex
           items-center
           gap-8
-          
+          primary-text
         ">
 
 
@@ -119,7 +119,6 @@ z-50
                 hover:text-cyan-400
                 transition
                 font-medium
-                text
                 "
 
               >
