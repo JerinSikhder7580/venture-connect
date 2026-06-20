@@ -24,7 +24,8 @@ const Navbar = () => {
     {
       name: "Opportunities",
       path: "/opportunities"
-    }
+    },
+   
   ];
 
 
@@ -203,7 +204,7 @@ z-50
 
                 <Link
 
-                  href="/register"
+                  href="/role"
 
                   className="
               bg-cyan-400

@@ -7,7 +7,7 @@ import { motion } from "motion/react"
 const Banner = () => {
     return (
         <div >
-            <div className='h-screen '>
+            <div className=' '>
 
                 {/* <Image
                     src='/banner.png'
