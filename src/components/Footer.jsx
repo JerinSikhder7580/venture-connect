@@ -1,7 +1,8 @@
-import { 
-  Facebook, 
-  Twitter, 
-  Linkedin, 
+"use client"
+import {
+  Facebook,
+  Twitter,
+  Linkedin,
   Github,
   Mail,
   Phone,
@@ -9,8 +10,16 @@ import {
   Send
 } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
 
 const Footer = () => {
+
+  const pathname = usePathname()
+  if (pathname.includes('dashboard')) {
+    return null
+  }
+
   return (
     <footer className="bg-slate-950 text-gray-300">
       <div className="max-w-7xl mx-auto px-6 py-12">
@@ -31,32 +40,32 @@ const Footer = () => {
 
             <div className="flex gap-4 mt-6">
 
-              <a 
+              <a
                 href="#"
                 className="hover:text-cyan-400 transition"
               >
-                <Send size={20}/>
+                <Send size={20} />
               </a>
 
-              <a 
+              <a
                 href="#"
                 className="hover:text-cyan-400 transition"
               >
-                <Send size={20}/>
+                <Send size={20} />
               </a>
 
-              <a 
+              <a
                 href="#"
                 className="hover:text-cyan-400 transition"
               >
-                <Send size={20}/>
+                <Send size={20} />
               </a>
 
-              <a 
+              <a
                 href="#"
                 className="hover:text-cyan-400 transition"
               >
-                <Send size={20}/>
+                <Send size={20} />
               </a>
 
             </div>
@@ -74,7 +83,7 @@ const Footer = () => {
             <ul className="space-y-3 text-sm">
 
               <li>
-                <Link 
+                <Link
                   href="/"
                   className="hover:text-cyan-400 transition"
                 >
@@ -84,7 +93,7 @@ const Footer = () => {
 
 
               <li>
-                <a 
+                <a
                   href="/startups"
                   className="hover:text-cyan-400 transition"
                 >
@@ -94,7 +103,7 @@ const Footer = () => {
 
 
               <li>
-                <a 
+                <a
                   href="/opportunities"
                   className="hover:text-cyan-400 transition"
                 >
@@ -104,7 +113,7 @@ const Footer = () => {
 
 
               <li>
-                <a 
+                <a
                   href="/login"
                   className="hover:text-cyan-400 transition"
                 >
@@ -164,7 +173,7 @@ const Footer = () => {
 
 
               <p className="flex gap-3 items-center">
-                <Mail 
+                <Mail
                   size={18}
                   className="text-cyan-400"
                 />
@@ -173,7 +182,7 @@ const Footer = () => {
 
 
               <p className="flex gap-3 items-center">
-                <Phone 
+                <Phone
                   size={18}
                   className="text-cyan-400"
                 />
@@ -182,7 +191,7 @@ const Footer = () => {
 
 
               <p className="flex gap-3 items-center">
-                <MapPin 
+                <MapPin
                   size={18}
                   className="text-cyan-400"
                 />
@@ -201,7 +210,7 @@ const Footer = () => {
 
         {/* Bottom */}
 
-        <div 
+        <div
           className="
           border-t 
           border-slate-800 

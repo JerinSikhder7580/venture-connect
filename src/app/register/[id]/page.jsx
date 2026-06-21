@@ -33,7 +33,7 @@ export default function Register() {
     }
 
 
-
+// 142536789zaqZAQ
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -54,22 +54,29 @@ export default function Register() {
         console.log(newFormData)
 
         const { data: result, error } = await authClient.signUp.email(newFormData)
-        if(!error){
+        if (!error) {
             router.push("/")
         }
 
 
         console.log({ result, error })
-
-
     }
+    const handleGoogleSignIn = async () => {
+
+        await authClient.signIn.social({
+            provider: "google"
+        })
+    }
+
+
+
 
 
     return (
         <div className='dark-bg'>
 
             <div className='p-8'>
-                <Card className='bg-white border max-w-2xl mx-auto'>
+                <Card className='bg-white border max-w-2xl mx-auto p-9'>
                     <h1 className='text-3xl font-bold text-center'>Create Account</h1>
                     <p className='text-center text-gray-500 font-semibold text-2xl'>Join Venture Connect Today</p>
                     <form
@@ -167,25 +174,13 @@ export default function Register() {
                             className="w-full dark-bg py-5"
                         >Create Account</Button>
 
-
-
-
-
-
-
-
-
-
-
-
-
                     </form>
                     <div className="flex items-center gap-3 my-6">
                         <div className="h-px bg-gray-200 flex-1" />
                         <span className="text-gray-400 text-sm">OR</span>
                         <div className="h-px bg-gray-200 flex-1" />
                     </div>
-                    <button className="w-full border border-gray-200 py-3 rounded-lg flex items-center justify-center gap-3 hover:bg-gray-50 transition">
+                    <button onClick={handleGoogleSignIn} className="w-full border border-gray-200 py-3 rounded-lg flex items-center justify-center gap-3 hover:bg-gray-50 transition">
                         <FcGoogle />
                         Continue with Google
                     </button>

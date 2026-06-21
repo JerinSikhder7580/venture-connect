@@ -3,406 +3,274 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Menu, X, Rocket } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
+import { Avatar } from "@heroui/react";
+import Swal from "sweetalert2";
+import { usePathname, useRouter } from "next/navigation";
 
 const Navbar = () => {
+    const router = useRouter()
+    const [dropdown, setDropdown] = useState(false)
+    const pathname = usePathname()
+    const { data: session } = authClient.useSession();
 
-  const [open, setOpen] = useState(false);
+    const user = session?.user;
 
-  // later replace with your auth user
-  const user = false;
-
-
-  const navLinks = [
-    {
-      name: "Home",
-      path: "/"
-    },
-    {
-      name: "Browse Startups",
-      path: "/startups"
-    },
-    {
-      name: "Opportunities",
-      path: "/opportunities"
-    },
-   
-  ];
-
-
-  return (
-
-    <nav className="
-     bg-white 
-dark-bg
-shadow-sm 
-sticky 
-top-0 
-z-50
-    ">
-
-
-      <div className="
-        max-w-7xl 
-        mx-auto 
-        px-6 
-        py-4
-        flex 
-        items-center 
-        justify-between
-      ">
-
-
-        {/* Logo */}
-
-        <Link
-          href="/"
-          className="
-          flex 
-          items-center 
-          gap-2
-          "
-        >
-
-          <div className="
-            bg-cyan-400
-            p-2
-            rounded-lg
-          ">
-
-            <Rocket
-              size={22}
-              className="text-white"
-            />
-
-          </div>
-
-
-          <h1 className="
-            text-2xl
-            font-bold
-           primary-text
-          ">
-
-            Venture
-            <span className="text-cyan-400">
-              Connect
-            </span>
-
-          </h1>
-
-        </Link>
-
-
-
-
-        {/* Desktop Menu */}
-
-        <div className="
-          hidden
-          md:flex
-          items-center
-          gap-8
-          primary-text
-        ">
-
-
-          {
-            navLinks.map((link) => (
-
-              <Link
-
-                key={link.name}
-
-                href={link.path}
-
-                className="
-                text-slate-600
-                hover:text-cyan-400
-                transition
-                font-medium
-                "
-
-              >
-
-                {link.name}
-
-              </Link>
-
-            ))
-          }
-
-
-        </div>
+    if (pathname.includes('dashboard')) {
+        return null
+    }
 
 
 
 
 
-        {/* Desktop Buttons */}
+    const navLinks = [
+        {
+            name: "Home",
+            path: "/",
+        },
+        {
+            name: "Browse Startups",
+            path: "/startups",
+        },
+        {
+            name: "Opportunities",
+            path: "/opportunities",
+        },
+    ];
 
 
-        <div className="
-          hidden
-          md:flex
-          items-center
-          gap-3
-        ">
+
+    const handleSignOut = () => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, LogOut!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                await authClient.signOut()
+                router.push("/login")
+                // }
 
 
-          {
-            user ?
-
-              <Link
-
-                href="/dashboard"
-
-                className="
-              bg-cyan-400
-              text-white
-              px-5
-              py-2
-              rounded-lg
-              hover:bg-cyan-500
-              transition
-              "
-
-              >
-
-                Dashboard
-
-              </Link>
+            }
+        });
 
 
-              :
-
-              <>
+    }
 
 
-                <Link
+    return (
+        <nav className="bg-white dark-bg shadow-sm sticky top-0 z-50">
 
-                  href="/login"
+            <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
-                  className="
-              border
-              border-cyan-400
-              text-cyan-500
-              px-5
-              py-2
-              rounded-lg
-              hover:bg-cyan-400
-              hover:text-white
-              transition
-              "
 
-                >
+                {/* Logo */}
 
-                  Login
+                <Link href="/" className="flex items-center gap-2">
+
+                    <div className="bg-cyan-400 p-2 rounded-lg">
+                        <Rocket size={22} className="text-white" />
+                    </div>
+
+                    <h1 className="text-2xl font-bold primary-text">
+                        Venture<span className="text-cyan-400">Connect</span>
+                    </h1>
 
                 </Link>
 
 
 
-                <Link
+                {/* Menu */}
 
-                  href="/role"
+                <div className="hidden md:flex items-center gap-8">
 
-                  className="
-              bg-cyan-400
-              text-white
-              px-5
-              py-2
-              rounded-lg
-              hover:bg-cyan-500
-              transition
-              "
+                    {
+                        navLinks.map((link) => (
+                            <Link
+                                key={link.name}
+                                href={link.path}
+                                className="text-cyan-400 hover:text-[#ff7900] transition"
+                            >
+                                {link.name}
+                            </Link>
+                        ))
+                    }
 
+                </div>
+
+
+
+
+                {/* Auth Button */}
+
+                <div className="hidden md:flex items-center gap-3">
+
+
+                    {
+                        user ? (
+
+                            <>
+                                <div className="relative">
+
+
+                                    <div >
+
+                                        <Avatar onClick={() => setDropdown(!dropdown)} className="border-2 w-10 h-10">
+                                            <Avatar.Image referrerPolicy="no-referrer" alt="user image" src={user?.image} className="object-cover" />
+                                            <Avatar.Fallback>{user?.name?.charAt(0)}</Avatar.Fallback>
+                                        </Avatar>
+                                    </div>
+                                    {
+                                        dropdown &&
+
+                                        <div className="p-4 border bg-white absolute right-0 top-12">
+                                            <Link href={`/dashboard/${user?.role?.toLowerCase()}`}>
+                                                <h1>Dashboard</h1>
+                                            </Link>
+                                        </div>
+                                    }
+
+                                </div>
+
+                                <button
+                                    onClick={handleSignOut}
+                                    className="bg-cyan-400 text-white px-5 py-2 rounded-lg hover:bg-cyan-900 transition"
+                                >
+                                    Logout
+                                </button>
+
+
+                            </>
+
+
+                        ) : (
+
+                            <>
+
+                                <Link
+                                    href="/login"
+                                    className="border border-cyan-400 text-cyan-400 px-5 py-2 rounded-lg hover:bg-cyan-400 hover:text-white transition"
+                                >
+                                    Login
+                                </Link>
+
+
+                                <Link
+                                    href="/role"
+                                    className="bg-cyan-400 text-white px-5 py-2 rounded-lg"
+                                >
+                                    Join Now
+                                </Link>
+
+                            </>
+                        )
+                    }
+
+
+                </div>
+
+
+
+
+
+                {/* Mobile */}
+                {/* 
+                <button
+                    // onClick={() => setDropDown(!dropdown)}
+                    className="md:hidden"
                 >
+                    {
+                        dropdown ? <X size={28} /> : <Menu size={28} />
+                    }
+                </button> */}
 
-                  Join Now
 
-                </Link>
+            </div>
 
 
-              </>
 
-          }
+            {
+                user && (
 
+                    <div className="md:hidden px-6 pb-5 space-y-4">
 
-        </div>
 
+                        {
+                            navLinks.map((link) => (
+                                <Link
+                                    key={link.name}
+                                    href={link.path}
+                                    className="block text-gray-600"
+                                >
+                                    {link.name}
+                                </Link>
+                            ))
+                        }
 
 
 
+                        {
+                            user ? (
 
-        {/* Mobile Menu Button */}
+                                <div className="flex items-center gap-3">
 
-        <button
+                                    <Avatar className="border-2">
+                                        <Avatar.Image referrerPolicy="no-referrer" alt="user image" src={user?.image} />
+                                        <Avatar.Fallback>{user.name.charAt(0)}</Avatar.Fallback>
+                                    </Avatar>
 
-          onClick={() => setOpen(!open)}
 
-          className="
-          md:hidden
-          text-slate-700
-          "
+                                    <button
+                                        onClick={handleSignOut}
+                                        className="bg-[#00142c] text-white px-4 py-2 rounded-lg"
+                                    >
+                                        Logout
+                                    </button>
 
-        >
 
-          {
-            open ?
+                                </div>
 
-              <X size={28} />
 
-              :
+                            ) : (
 
-              <Menu size={28} />
+                                <div className="flex gap-3">
 
-          }
+                                    <Link
+                                        href="/login"
+                                        className="flex-1 text-center border border-cyan-400 text-cyan-400 py-2 rounded-lg"
+                                    >
+                                        Login
+                                    </Link>
 
 
-        </button>
+                                    <Link
+                                        href="/role"
+                                        className="flex-1 text-center bg-cyan-400 text-white py-2 rounded-lg"
+                                    >
+                                        Join Now
+                                    </Link>
 
 
+                                </div>
 
+                            )
+                        }
 
-      </div>
 
+                    </div>
 
+                )
+            }
 
 
-
-      {/* Mobile Menu */}
-
-      {
-        open &&
-
-        <div className="
-          md:hidden
-          px-6
-          pb-6
-          space-y-4
-        ">
-
-
-          {
-            navLinks.map((link) => (
-
-
-              <Link
-
-                key={link.name}
-
-                href={link.path}
-
-                onClick={() => setOpen(false)}
-
-                className="
-                block
-                text-slate-600
-                hover:text-cyan-400
-                "
-
-              >
-
-                {link.name}
-
-              </Link>
-
-
-            ))
-          }
-
-
-
-          {
-
-            user ?
-
-              <Link
-
-                href="/dashboard"
-
-                className="
-              block
-              bg-cyan-400
-              text-white
-              text-center
-              py-2
-              rounded-lg
-              "
-
-              >
-
-                Dashboard
-
-              </Link>
-
-
-              :
-
-              <div className="
-              flex
-              gap-3
-            ">
-
-
-                <Link
-
-                  href="/login"
-
-                  className="
-                flex-1
-                text-center
-                border
-                border-cyan-400
-                text-cyan-400
-                py-2
-                rounded-lg
-                "
-
-                >
-
-                  Login
-
-                </Link>
-
-
-                <Link
-
-                  href="/register"
-
-                  className="
-                flex-1
-                text-center
-                bg-cyan-400
-                text-white
-                py-2
-                rounded-lg
-                "
-
-                >
-
-                  Register
-
-                </Link>
-
-
-              </div>
-
-
-          }
-
-
-
-        </div>
-
-      }
-
-
-
-    </nav>
-
-  );
-
+        </nav>
+    );
 };
 
 

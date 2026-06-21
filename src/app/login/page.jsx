@@ -3,19 +3,33 @@
 import Link from "next/link";
 import { ArrowLeft, Mail, User, Chrome } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
+import { authClient } from "@/lib/auth-client";
 
 export default function LoginPage() {
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        const form = e.target
+        const formData = new FormData(form) // entries
+        const newFormData = Object.fromEntries(formData)
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+        const { data: result, error } = await authClient.signIn.email(newFormData)
+        if (!error) {
+            router.push("/")
+        }
 
-        const form = e.target;
 
-        console.log({
-            name: form.name.value,
-            email: form.email.value,
-        });
-    };
+        console.log({ result, error })
+
+
+    }
+    const handleGoogleSignIn = async () => {
+
+        await authClient.signIn.social({
+            provider: "google"
+        })
+    }
+
+
 
 
     return (
@@ -75,7 +89,7 @@ export default function LoginPage() {
                 </div>
 
 
-                <button className="w-full border border-gray-200 py-3 rounded-lg flex items-center justify-center gap-3 hover:bg-gray-50 transition">
+                <button onClick={handleGoogleSignIn} className="w-full border border-gray-200 py-3 rounded-lg flex items-center justify-center gap-3 hover:bg-gray-50 transition">
                     <FcGoogle />
                     Continue with Google
                 </button>
