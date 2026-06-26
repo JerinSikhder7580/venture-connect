@@ -3,7 +3,7 @@ import React from 'react';
 const CollaboratorPage = () => {
     return (
         <div>
-            collaboratorPage
+          <h1 className='text-white'>collaborator dashboard</h1>
         </div>
     );
 };

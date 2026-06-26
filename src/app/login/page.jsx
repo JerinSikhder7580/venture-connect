@@ -4,8 +4,11 @@ import Link from "next/link";
 import { ArrowLeft, Mail, User, Chrome } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { authClient } from "@/lib/auth-client";
+import { router } from "better-auth/api";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+    const router = useRouter()
     const handleSubmit = async (e) => {
         e.preventDefault()
         const form = e.target
@@ -13,7 +16,7 @@ export default function LoginPage() {
         const newFormData = Object.fromEntries(formData)
 
         const { data: result, error } = await authClient.signIn.email(newFormData)
-        if (!error) {
+        if (result) {
             router.push("/")
         }
 
@@ -53,23 +56,23 @@ export default function LoginPage() {
 
 
                     <div>
-                        <label className="text-sm font-medium text-gray-700">Name</label>
+                        <label className="text-sm font-medium text-gray-700">Email</label>
 
                         <div className="flex items-center border rounded-lg mt-2 px-3 focus-within:ring-2 focus-within:ring-[#00d3f2]">
                             <User size={20} className="text-gray-400" />
 
-                            <input name="name" type="text" placeholder="Enter your name" className="w-full px-3 py-3 outline-none" />
+                            <input name="email" type="text" placeholder="Enter your name" className="w-full px-3 py-3 outline-none" />
                         </div>
                     </div>
 
 
                     <div>
-                        <label className="text-sm font-medium text-gray-700">Email</label>
+                        <label className="text-sm font-medium text-gray-700">Password</label>
 
                         <div className="flex items-center border rounded-lg mt-2 px-3 focus-within:ring-2 focus-within:ring-[#00d3f2]">
                             <Mail size={20} className="text-gray-400" />
 
-                            <input name="email" type="email" placeholder="Enter your email" className="w-full px-3 py-3 outline-none" />
+                            <input name="password" type="password" placeholder="Enter your email" className="w-full px-3 py-3 outline-none" />
                         </div>
                     </div>
 
@@ -93,6 +96,22 @@ export default function LoginPage() {
                     <FcGoogle />
                     Continue with Google
                 </button>
+
+                <h1 className="text-center mt-5 text-sm sm:text-base">
+
+                    Don&apos;t have an account ?
+
+                    <Link href={"/role"}
+
+                        className="text-cyan-500 ml-1"
+                    >
+                        Register
+                    </Link>
+
+
+
+                </h1>
+
 
 
             </div>

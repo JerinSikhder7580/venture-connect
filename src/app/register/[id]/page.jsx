@@ -5,6 +5,7 @@ import { Button, Card, Form } from '@heroui/react';
 import axios from 'axios';
 import { Plus } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useRef, useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
@@ -33,7 +34,7 @@ export default function Register() {
     }
 
 
-// 142536789zaqZAQ
+    // 142536789zaqZAQ
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -46,6 +47,7 @@ export default function Register() {
         console.log(data.data.url)
         formData.append("image", data.data.url)
         formData.append("role", id.id)
+        formData.append('opportunity',3)
 
 
         const newFormData = Object.fromEntries(formData)
@@ -184,6 +186,20 @@ export default function Register() {
                         <FcGoogle />
                         Continue with Google
                     </button>
+
+                    <h1 className="text-center mt-5 text-sm sm:text-base">
+
+                        Already have an account ?
+
+                        <Link
+                            className="text-cyan-500 ml-1"
+                            href={"/login"}
+                        >
+                            Login
+                        </Link>
+
+                    </h1>
+
 
 
                 </Card>

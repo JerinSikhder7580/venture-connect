@@ -3,9 +3,10 @@
 import { auth } from "@/lib/auth";
 import { Bars, Bell, Envelope, Gear, House, Magnifier, Person } from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";
-import { ChartArea, } from "lucide-react";
+import { ChartArea, Rocket, } from "lucide-react";
 import { label } from "motion/react-client";
 import { headers } from "next/headers";
+import Link from "next/link";
 
 export default async function DashboardSidebar() {
     const session = await auth.api.getSession({
@@ -14,39 +15,41 @@ export default async function DashboardSidebar() {
 
     const user = session?.user
     const role = user?.role?.toLowerCase() || "collaborator";
-    console.log(user)
+
+    // middleware / proxy private route
+    //     My Startup
+    // Add Opportunity
+    // Manage Opportunities
+    // Applications
+
 
 
     const dashboardItems = {
         admin: [
-            { icon: ChartArea, label: "Overview", link: '/dashboard/admin' },
+            { icon: ChartArea, label: "Overview", link: '/dashboard/admin/overview' },
             { icon: ChartArea, label: "Manage Users", link: '/dashboard/admin/manage-users' },
-            { icon: ChartArea, label: "Manage Startup Posts", link: '/dashboard/admin/manage-startup-post' },
-            { icon: ChartArea, label: "View Transactions", link: '/dashboard/admin/view-transaction' },
-            { icon: ChartArea, label: "Moderate Platform Activities", link: '/dashboard/admin/moderate-platform-activities' },
+            { icon: ChartArea, label: "Manage Startup", link: '/dashboard/admin/manage-startup' },
+            { icon: ChartArea, label: " Transactions", link: '/dashboard/admin/transaction' },
 
         ],
         founder: [
-            { icon: ChartArea, label: "Overview", link: '/dashboard/founder' },
-            { icon: ChartArea, label: "Create Startup Profile", link: '/dashboard/founder/create-startup-profile' },
-            { icon: ChartArea, label: "Post Team Requirements", link: '/dashboard/founder/post-team-requirements' },
-            { icon: ChartArea, label: "Review Applications", link: '/dashboard/founder/review-application' },
-            { icon: ChartArea, label: "Manage Applicants", link:'/dashboard/founder/manage-applicants' },
+            { icon: ChartArea, label: "Overview", link: '/dashboard/founder/overview' },
+            { icon: ChartArea, label: "My Startup", link: '/dashboard/founder/my-startup' },
+            { icon: ChartArea, label: "Add opportunity", link: '/dashboard/founder/add-opportunity' },
+            { icon: ChartArea, label: "Manage Opportunity", link: '/dashboard/founder/manage-opportunity' },
+            { icon: ChartArea, label: "Application", link: '/dashboard/founder/application' },
 
         ],
         collaborator: [
-            { icon: ChartArea, label: "Overview", link: '/dashboard/collaborator' },
-            { icon: ChartArea, label: "Browse Startups", link: '/dashboard/collaborator/browse-startups' },
-            { icon: ChartArea, label: "Apply to Join Teams", link: '/dashboard/collaborator/apply-to-join-teams' },
-            { icon: ChartArea, label: "Track Application Status", link: '/dashboard/collaborator/track-application-status' },
-            { icon: ChartArea, label: "Maintain Personal Profile", link: '/dashboard/collaborator/maintain-personal-profile' },
+            { icon: ChartArea, label: "Overview", link: '/dashboard/collaborator/overview' },
+            { icon: ChartArea, label: "My Applications", link: '/dashboard/collaborator/my-applications' },
+            { icon: ChartArea, label: "Profile", link: '/dashboard/collaborator/profile' },
 
         ],
 
 
     }
     const navItems = dashboardItems[role]
-    console.log(navItems)
 
     // const navItems = [
     //     { icon: House, label: "Home" },
@@ -65,17 +68,31 @@ export default async function DashboardSidebar() {
                     <Bars />
                     Menu
                 </Button>
+                <Link href="/" className="flex items-center gap-2">
+
+                    <div className="bg-cyan-400 p-1 rounded-lg ">
+                        <Rocket size={22} className="text-white" />
+                    </div>
+                    <div className=" p-3">
+                        <h1 className="text-2xl font-bold primary-text ">
+                            Venture<span className="text-cyan-400">Connect</span>
+                        </h1>
+                    </div>
+
+                </Link>
+
+
 
                 <nav className="flex flex-col gap-1 w-55">
                     {navItems?.map((item) => (
-                        <button
+                        <Link href={item.link}
                             key={item.label}
                             className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-default"
                             type="button"
                         >
                             <item.icon className="size-5 text-muted" />
                             {item.label}
-                        </button>
+                        </Link>
                     ))}
                 </nav>
 
@@ -97,6 +114,7 @@ export default async function DashboardSidebar() {
                                             <item.icon className="size-5 text-muted" />
                                             {item.label}
                                         </button>
+
                                     ))}
                                 </nav>
                             </Drawer.Body>

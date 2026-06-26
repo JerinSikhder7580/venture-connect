@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, Rocket } from "lucide-react";
+import { Menu, X, Rocket, CircleGauge } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { Avatar } from "@heroui/react";
 import Swal from "sweetalert2";
@@ -10,7 +10,7 @@ import { usePathname, useRouter } from "next/navigation";
 
 const Navbar = () => {
     const router = useRouter()
-    const [dropdown, setDropdown] = useState(false)
+    const [dropdown, setDropdown] = useState(false) // 
     const pathname = usePathname()
     const { data: session } = authClient.useSession();
 
@@ -62,6 +62,7 @@ const Navbar = () => {
 
 
     }
+    // Link, router, redirect .................. 
 
 
     return (
@@ -95,7 +96,7 @@ const Navbar = () => {
                             <Link
                                 key={link.name}
                                 href={link.path}
-                                className="text-cyan-400 hover:text-[#ff7900] transition"
+                                className={`text-cyan-400 hover:text-[#ff7900] transition ${pathname === link.path ? "active" : ""}`}
                             >
                                 {link.name}
                             </Link>
@@ -129,9 +130,33 @@ const Navbar = () => {
                                     {
                                         dropdown &&
 
-                                        <div className="p-4 border bg-white absolute right-0 top-12">
+                                        <div className=" border bg-white absolute right-0 top-12 p-5">
                                             <Link href={`/dashboard/${user?.role?.toLowerCase()}`}>
-                                                <h1>Dashboard</h1>
+                                                <div className="flex items-center justify-center gap-2 p-8 border border-b mb-3">
+
+                                                    <div className=" p-1 rounded-full">
+
+                                                        <Avatar className="border-2 w-10 h-10">
+                                                            <Avatar.Image referrerPolicy="no-referrer" alt="user image" src={user?.image} className="object-cover" />
+                                                            <Avatar.Fallback>{user?.name?.charAt(0)}</Avatar.Fallback>
+                                                        </Avatar>
+                                                    </div>
+                                                    <div>
+                                                        <h1 className="text-lg font-bold">{user.name}</h1>
+                                                        <p className="text-sm text-gray-500 mb-2">{user.email}</p>
+                                                        <span className="bg-gray-100 rounded-full px-2">{user?.role}</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+
+                                                    <div className="flex">
+                                                        <CircleGauge />
+                                                        <button onClick={() => setDropdown(false)} className="btn w-full mb-2 bg-[#4f72a0] border border-[#00112c]">Dashboard</button>
+                                                    </div>
+                                                    <button onClick={() => setDropdown(false)} className="btn w-full bg-[#f59d51] border border-[#ff7900]">Profile</button>
+                                                    <button onClick={() => setDropdown(false)} className="btn w-full bg-cyan-200 mb-2 border border-[#00d3f2]">LogOut</button>
+                                                </div>
+
                                             </Link>
                                         </div>
                                     }
