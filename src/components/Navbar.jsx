@@ -153,7 +153,7 @@ const Navbar = () => {
                                                         <CircleGauge />
                                                         <button onClick={() => setDropdown(false)} className="btn w-full mb-2 bg-[#4f72a0] border border-[#00112c]">Dashboard</button>
                                                     </div>
-                                                    <button onClick={() => setDropdown(false)} className="btn w-full bg-[#f59d51] border border-[#ff7900]">Profile</button>
+                                                    <Link href={"/profile"} onClick={() => setDropdown(false)} className="btn w-full bg-[#f59d51] mb-2 border border-[#ff7900]">Profile</Link>
                                                     <button onClick={() => setDropdown(false)} className="btn w-full bg-cyan-200 mb-2 border border-[#00d3f2]">LogOut</button>
                                                 </div>
 
