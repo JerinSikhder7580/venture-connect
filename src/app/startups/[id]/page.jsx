@@ -15,8 +15,6 @@ const StartupDetailsPage = () => {
 
         }
     })
-
-
     console.log(id)
     return (
         <div className='dark-bg h-screen'>
@@ -25,7 +23,6 @@ const StartupDetailsPage = () => {
                     <h1 className='text-white'>hlwwwww</h1>
 
                 </div>
-
             </section>
         </div>
     );
