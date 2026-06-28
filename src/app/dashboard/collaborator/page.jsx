@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CollaboratorPage = () => {
+const CollaboratorProfilePage = () => {
     return (
         <div>
           <h1 className='text-white'>collaborator dashboard</h1>
@@ -8,4 +8,4 @@ const CollaboratorPage = () => {
     );
 };
 
-export default CollaboratorPage;
+export default CollaboratorProfilePage;

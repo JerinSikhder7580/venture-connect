@@ -8,26 +8,26 @@ import { useParams } from 'next/navigation';
 const StartupDetailsPage = () => {
     const { id } = useParams()
     console.log(id)
-    const { data: session } = authClient.useSession()
-    const userEmail = session?.user?.email
+
+    // const { data: session } = authClient.useSession()
+    // const userEmail = session?.user?.email
 
 
-    const { data, isLoading } = useQuery({
+    const { data, isLoading, error } = useQuery({
         queryKey: [id, "startup"],
         queryFn: async () => {
             const result = await axios.get(`http://localhost:8000/startup/${id}`)
             return result.data
-
         }
     })
 
     const { data: roles, isLoading: roleLoading } = useQuery({
         queryKey: [id, "role"],
         queryFn: async () => {
-            const result = await axios.get(`http://localhost:8000/opportunity?userEmail=${userEmail}`)
+            const result = await axios.get(`http://localhost:8000/opportunity?userEmail=${data.userEmail}`)
             return result.data
         },
-        enabled: userEmail ? true : false
+        enabled: !isLoading && !error
     })
     console.log(roles)
 

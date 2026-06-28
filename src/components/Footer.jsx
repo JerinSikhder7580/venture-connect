@@ -7,10 +7,14 @@ import {
   Mail,
   Phone,
   MapPin,
-  Send
+  Send,
+  Rocket
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { BsTwitterX } from "react-icons/bs";
+import { FaFacebook, FaLinkedin } from "react-icons/fa";
+import { GrInstagram } from "react-icons/gr";
 
 
 const Footer = () => {
@@ -28,7 +32,11 @@ const Footer = () => {
 
           {/* Logo & Description */}
           <div>
-            <h2 className="text-3xl font-bold text-white">
+            <h2 className="text-3xl font-bold text-white flex gap-2 items-center justify-center">
+              <div className="bg-[#00d3f2] p-2 rounded-md">
+              <Rocket size={24} className="text-white " />
+              </div>
+
               Venture<span className="text-cyan-400">Connect</span>
             </h2>
 
@@ -39,34 +47,19 @@ const Footer = () => {
             </p>
 
             <div className="flex gap-4 mt-6">
+              <FaFacebook size={22} />
 
-              <a
-                href="#"
-                className="hover:text-cyan-400 transition"
-              >
-                <Send size={20} />
-              </a>
 
-              <a
-                href="#"
-                className="hover:text-cyan-400 transition"
-              >
-                <Send size={20} />
-              </a>
 
-              <a
-                href="#"
-                className="hover:text-cyan-400 transition"
-              >
-                <Send size={20} />
-              </a>
 
-              <a
-                href="#"
-                className="hover:text-cyan-400 transition"
-              >
-                <Send size={20} />
-              </a>
+              <FaLinkedin size={22} />
+
+
+              <GrInstagram size={22} />
+
+
+              <BsTwitterX size={22} />
+
 
             </div>
 

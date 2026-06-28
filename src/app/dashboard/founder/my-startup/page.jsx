@@ -14,8 +14,8 @@ import Swal from 'sweetalert2';
 
 const MyStartup = () => {
     const { data: session } = authClient.useSession();
+    const founderName = session?.user?.name
     const userEmail = session?.user?.email
-    console.log(userEmail)
 
     // const theObject = {
     //     name: "rahim",
@@ -109,8 +109,8 @@ const MyStartup = () => {
                     axios.delete(`http://localhost:8000/startups?userEmail=${userEmail}`),
                     {
                         loading: "Deleting",
-                        success: () => {
-                            refetch()
+                        success: async () => {
+                            await refetch()
                             return "Deleted"
                         },
                         error: "Failed to Delete"
@@ -134,6 +134,7 @@ const MyStartup = () => {
         formData.append("image", theData.data.data.url)
         formData.append("userEmail", userEmail)
         formData.append("status", "pending")
+        formData.append("founderName",founderName)
 
 
         const data = Object.fromEntries(formData.entries())

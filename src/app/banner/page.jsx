@@ -3,6 +3,8 @@ import { Button } from '@heroui/react';
 import Image from 'next/image';
 import React from 'react';
 import { motion } from "motion/react"
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 
 const Banner = () => {
     return (
@@ -49,8 +51,8 @@ const Banner = () => {
                                 transition={{ duration: .6, delay: .2 }}
                                 whileInView={{ once: true }}
                                 className='flex gap-2 mt-4'>
-                                <Button className='  secondary-bg rounded-md'>Explore opportunities</Button>
-                                <Button className='background rounded-md'>How it works</Button>
+                                <Link href={"/opportunities"} className='text-white items-center justify-center flex p-2  secondary-bg rounded-md'>Explore opportunities <ArrowRight  /></Link>
+                                <Button className='background rounded-md p-6 flex items-center justify-center'>How it works</Button>
                             </motion.div>
                         </div>
                     </div>

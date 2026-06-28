@@ -1,9 +1,11 @@
 "use client"
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { Search } from 'lucide-react';
 import { h1 } from 'motion/react-client';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 
 const BrowseStartups = () => {
     // http method :get method
@@ -15,26 +17,78 @@ const BrowseStartups = () => {
     //     queryFn: "fn of query (fetch)"
     // })
 
+    const industries = [
+        "Technology",
+        "Artificial Intelligence",
+        "Software Development",
+        "HealthTech",
+        "Educational",
+        "E-commerce",
+
+        "Cyber Security",
+        "Gaming",
+        "Media & Entertainment",
+        "Marketing & Advertising",
+        "Travel & Tourism",
+        "Real Estate",
+        "Logistics & Transportation",
+        "Fashion & Lifestyle",
+        "Robotics",
+        "Other"
+    ];
+    const [search, setSearch] = useState("")
+    const [filter, setFilter] = useState("")
+
     const { data } = useQuery({
-        queryKey: ["browse-startup"],
+        queryKey: ["browse-startup", search, filter],
         queryFn: async () => {
-            const result = await axios.get("http://localhost:8000/startups?status=accept")
+            const result = await axios.get(`http://localhost:8000/startups?status=accept&search=${search}&filter=${filter}`)
             return result.data
         }
 
     })
     console.log(data)
 
+    const handleFilter = (e) => {
+        setSearch("")
+        setFilter(e.target.value)
+        console.log("filter")
+    }
 
+
+    const handleSearch = (e) => {
+        setFilter("")
+        setSearch(e.target.value)
+        console.log("search")
+
+    }
 
 
 
 
     return (
         <div className='dark-bg h-full'>
+            {/* <h1 > </h1> */}
+
             <section>
                 <h1 className='text-white text-3xl text-center'>Browse Startups</h1>
                 <p className='text-gray-500 text-center'>Browse all startups here!</p>
+                <div className=' bg-white/10 p-4 flex gap-2 items-center justify-center'>
+                    <label className='input w-full dark-bg' >
+                        <Search color='#00d3f2' />
+                        <input onChange={handleSearch} type="text" />
+                    </label>
+
+                    <select onChange={handleFilter} defaultValue={"All Industry"} className='select w-full items-start justify-center   text-white dark-bg' >
+                        <option value="">All Industry</option>
+                        {
+                            industries.map((industry, index) =>
+                                <option key={index} >{industry}</option>
+                            )
+                        }
+                    </select>
+                </div>
+
                 <div className=''>All Industries</div>
 
 

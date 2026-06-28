@@ -4,7 +4,9 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { success } from 'better-auth';
 import { error } from 'better-auth/api';
+import { aside } from 'motion/react-client';
 import { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import Swal from 'sweetalert2';
 
 const ManageOpportunity = () => {
@@ -30,6 +32,17 @@ const ManageOpportunity = () => {
         "Co-founder"
     ];
 
+    const { data, refetch } = useQuery({
+        queryKey: ["manage-opportunity"],
+        queryFn: async () => {
+            const result = await axios.get(`http://localhost:8000/opportunity?userEmail=${userEmail}`)
+            return result.data
+        },
+        enabled: userEmail ? true : false
+    })
+    console.log(data)
+
+
     const handleDelete = (id) => {
         Swal.fire({
             title: "Are you sure?",
@@ -42,10 +55,11 @@ const ManageOpportunity = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 toast.promise(
-                    axios.delete(`http://localhost:8000/opportunity?id=${id}`),
+                    axios.delete(`http://localhost:8000/opportunity/${id}`),
                     {
                         loading: "Deleting",
                         success: () => {
+                            refetch()
                             return "Delete Successfully"
 
                         },
@@ -55,17 +69,32 @@ const ManageOpportunity = () => {
             }
         });
     }
-    const { data } = useQuery({
-        queryKey: ["manage-opportunity"],
-        queryFn: async () => {
-            const result = await axios.get(`http://localhost:8000/opportunity?userEmail=${userEmail}`)
+    const handleEdit = (e, id) => {
+        e.preventDefault()
+        setSelectedOpportunity()
+        const formData = Object.fromEntries(new FormData(e.target).entries())
+
+
+        toast.promise(async () => {
+            const result = await axios.patch(`http://localhost:8000/opportunity?id=${id}`, formData)
             return result.data
         },
-        enabled: userEmail ? true : false
-    })
-    console.log(data)
+            {
+                loading: "Updating Data",
+                success: async () => {
+                    await refetch()
+                    return "Update Successfully"
+
+                },
+                error: "Update Failed"
+            }
+        )
+
+    }
+
     return (
         <div className='space-y-6'>
+            <Toaster />
             <div>
                 <h1 className='text-3xl font-bold text-cyan-400'>Manage Opportunity</h1>
                 <p className='mt-2 text-gray-400'>Update or remove your posted startup roles.</p>
@@ -148,7 +177,7 @@ const ManageOpportunity = () => {
                                 </button>
                             </div>
 
-                            <form className='space-y-4'>
+                            <form onSubmit={(e) => handleEdit(e, selectedOpportunity._id)} className='space-y-4'>
                                 <div className='grid gap-4 md:grid-cols-2'>
                                     <div className='space-y-2'>
                                         <label className='text-sm font-medium text-gray-300'>Title</label>

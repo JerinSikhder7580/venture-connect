@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, Rocket, CircleGauge } from "lucide-react";
+import { Menu, X, Rocket, CircleGauge, LayoutDashboard, ShieldPlus, LogOut, CircleGaugeIcon } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { Avatar } from "@heroui/react";
 import Swal from "sweetalert2";
@@ -130,13 +130,13 @@ const Navbar = () => {
                                     {
                                         dropdown &&
 
-                                        <div className=" border bg-white absolute right-0 top-12 p-5">
+                                        <div className=" border rounded-md  bg-white absolute right-0 top-12 p-5">
                                             <Link href={`/dashboard/${user?.role?.toLowerCase()}`}>
-                                                <div className="flex items-center justify-center gap-2 p-8 border border-b mb-3">
+                                                <div className="flex items-center justify-center gap-2 p-8 border-2 border-cyan-400 rounded-md mb-3">
 
                                                     <div className=" p-1 rounded-full">
 
-                                                        <Avatar className="border-2 w-10 h-10">
+                                                        <Avatar className="border-2 border-cyan-400 w-10 h-10">
                                                             <Avatar.Image referrerPolicy="no-referrer" alt="user image" src={user?.image} className="object-cover" />
                                                             <Avatar.Fallback>{user?.name?.charAt(0)}</Avatar.Fallback>
                                                         </Avatar>
@@ -150,11 +150,11 @@ const Navbar = () => {
                                                 <div>
 
                                                     <div className="flex">
-                                                        <CircleGauge />
-                                                        <button onClick={() => setDropdown(false)} className="btn w-full mb-2 bg-[#4f72a0] border border-[#00112c]">Dashboard</button>
+                                                        {/* <CircleGaugeIcon /> */}
+                                                        <button onClick={() => setDropdown(false)} className="btn w-full mb-2 bg-[#4f72a0] border border-[#00112c]"><LayoutDashboard size={16} /> Dashboard</button>
                                                     </div>
-                                                    <Link href={"/profile"} onClick={() => setDropdown(false)} className="btn w-full bg-[#f59d51] mb-2 border border-[#ff7900]">Profile</Link>
-                                                    <button onClick={() => setDropdown(false)} className="btn w-full bg-cyan-200 mb-2 border border-[#00d3f2]">LogOut</button>
+                                                    <Link href={"/profile"} onClick={() => setDropdown(false)} className="btn w-full bg-[#f59d51] mb-2 border border-[#ff7900]"><ShieldPlus size={16} /> Profile</Link>
+                                                    <button onClick={handleSignOut} className="btn w-full bg-cyan-200 mb-2 border border-[#00d3f2]"><LogOut size={16} /> LogOut</button>
                                                 </div>
 
                                             </Link>
