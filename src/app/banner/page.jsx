@@ -11,17 +11,7 @@ const Banner = () => {
         <div >
             <div className=' '>
 
-                {/* <Image
-                    src='/banner.png'
-                    alt='Banner'
-
-                    fill
-                    className='object-cover'
-
-                /> */}
-                {/* <div className='' style={{backgroundImage:"url('/banner.png')"}} >
-                    
-                </div> */}
+               
                 <div >
 
 
@@ -45,6 +35,8 @@ const Banner = () => {
                                     whileInView={{ once: true }}
                                     className='text-gray-400 text-xl font-semibold'>VentureConnect connects founders with talented collaborators to build <br /> amazing startups together.Post opportunities,discover ideas and build yours dream teams</motion.p>
                             </div>
+
+                            
                             <motion.div
                                 initial={{ y: 40, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
