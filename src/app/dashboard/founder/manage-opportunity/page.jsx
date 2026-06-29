@@ -32,7 +32,7 @@ const ManageOpportunity = () => {
         "Co-founder"
     ];
 
-    const { data, refetch } = useQuery({
+    const { data, isLoading, refetch } = useQuery({
         queryKey: ["manage-opportunity"],
         queryFn: async () => {
             const result = await axios.get(`http://localhost:8000/opportunity?userEmail=${userEmail}`)
@@ -102,7 +102,11 @@ const ManageOpportunity = () => {
 
             <div className='space-y-4'>
                 {
-                    data?.length ? (
+                    isLoading ? (
+                        <div className='flex justify-center rounded-xl border border-cyan-400/30 bg-white/10 p-8'>
+                            <span className="loading loading-spinner text-success"></span>
+                        </div>
+                    ) : data?.length ? (
                         data.map((opportunity) => (
                             <div key={opportunity._id} className='w-full rounded-xl border border-cyan-400/30 bg-white/10 p-6 shadow-xl shadow-cyan-950/20'>
                                 <div className='flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between'>

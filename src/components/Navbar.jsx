@@ -7,19 +7,20 @@ import { authClient } from "@/lib/auth-client";
 import { Avatar } from "@heroui/react";
 import Swal from "sweetalert2";
 import { usePathname, useRouter } from "next/navigation";
+import useRole from "@/hooks/useRole";
 
 const Navbar = () => {
     const router = useRouter()
     const [dropdown, setDropdown] = useState(false) // 
     const pathname = usePathname()
     const { data: session } = authClient.useSession();
+    const {role} = useRole()
 
     const user = session?.user;
 
     if (pathname.includes('dashboard')) {
         return null
     }
-
 
 
 
@@ -41,7 +42,11 @@ const Navbar = () => {
 
 
 
-    const handleSignOut = () => {
+    const handleSignOut = (e) => {
+        e.stopPropagation()
+        e.preventDefault()
+        e.stop
+
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -52,9 +57,10 @@ const Navbar = () => {
             confirmButtonText: "Yes, LogOut!"
         }).then(async (result) => {
             if (result.isConfirmed) {
+
                 await authClient.signOut()
                 router.push("/login")
-                // }
+
 
 
             }
@@ -62,7 +68,6 @@ const Navbar = () => {
 
 
     }
-    // Link, router, redirect .................. 
 
 
     return (
@@ -131,33 +136,33 @@ const Navbar = () => {
                                         dropdown &&
 
                                         <div className=" border rounded-md  bg-white absolute right-0 top-12 p-5">
-                                            <Link href={`/dashboard/${user?.role?.toLowerCase()}`}>
-                                                <div className="flex items-center justify-center gap-2 p-8 border-2 border-cyan-400 rounded-md mb-3">
+                                            {/* <Link href={`/dashboard/${user?.role?.toLowerCase()}`}> */}
+                                            <div className="flex items-center justify-center gap-2 p-8 border-2 border-cyan-400 rounded-md mb-3">
 
-                                                    <div className=" p-1 rounded-full">
+                                                <div className=" p-1 rounded-full">
 
-                                                        <Avatar className="border-2 border-cyan-400 w-10 h-10">
-                                                            <Avatar.Image referrerPolicy="no-referrer" alt="user image" src={user?.image} className="object-cover" />
-                                                            <Avatar.Fallback>{user?.name?.charAt(0)}</Avatar.Fallback>
-                                                        </Avatar>
-                                                    </div>
-                                                    <div>
-                                                        <h1 className="text-lg font-bold">{user.name}</h1>
-                                                        <p className="text-sm text-gray-500 mb-2">{user.email}</p>
-                                                        <span className="bg-gray-100 rounded-full px-2">{user?.role}</span>
-                                                    </div>
+                                                    <Avatar className="border-2 border-cyan-400 w-10 h-10">
+                                                        <Avatar.Image referrerPolicy="no-referrer" alt="user image" src={user?.image} className="object-cover" />
+                                                        <Avatar.Fallback>{user?.name?.charAt(0)}</Avatar.Fallback>
+                                                    </Avatar>
                                                 </div>
                                                 <div>
-
-                                                    <div className="flex">
-                                                        {/* <CircleGaugeIcon /> */}
-                                                        <button onClick={() => setDropdown(false)} className="btn w-full mb-2 bg-[#4f72a0] border border-[#00112c]"><LayoutDashboard size={16} /> Dashboard</button>
-                                                    </div>
-                                                    <Link href={"/profile"} onClick={() => setDropdown(false)} className="btn w-full bg-[#f59d51] mb-2 border border-[#ff7900]"><ShieldPlus size={16} /> Profile</Link>
-                                                    <button onClick={handleSignOut} className="btn w-full bg-cyan-200 mb-2 border border-[#00d3f2]"><LogOut size={16} /> LogOut</button>
+                                                    <h1 className="text-lg font-bold">{user.name}</h1>
+                                                    <p className="text-sm text-gray-500 mb-2">{user.email}</p>
+                                                    <span className="bg-gray-100 rounded-full px-2">{user?.role}</span>
                                                 </div>
+                                            </div>
+                                            <div>
+                                                {/* <div> */}
+                                                <div className="flex">
+                                                    <Link href={`/dashboard/${role}/overview`} onClick={() => setDropdown(false)} className="btn w-full mb-2 bg-[#4f72a0] border border-[#00112c]"><LayoutDashboard size={16} /> Dashboard</Link>
+                                                </div>
+                                                <Link href={"/dashboard/collaborator/profile"} onClick={() => setDropdown(false)} className="btn w-full bg-[#f59d51] mb-2 border border-[#ff7900]"><ShieldPlus size={16} /> Profile</Link>
+                                                {/* </div> */}
+                                                <button onClick={handleSignOut} className="btn w-full bg-cyan-200 mb-2 border border-[#00d3f2]"><LogOut size={16} /> LogOut</button>
+                                            </div>
 
-                                            </Link>
+                                            {/* </Link> */}
                                         </div>
                                     }
 
@@ -202,18 +207,6 @@ const Navbar = () => {
 
 
 
-
-
-                {/* Mobile */}
-                {/* 
-                <button
-                    // onClick={() => setDropDown(!dropdown)}
-                    className="md:hidden"
-                >
-                    {
-                        dropdown ? <X size={28} /> : <Menu size={28} />
-                    }
-                </button> */}
 
 
             </div>

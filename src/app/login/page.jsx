@@ -72,7 +72,7 @@ export default function LoginPage() {
                         <div className="flex items-center border rounded-lg mt-2 px-3 focus-within:ring-2 focus-within:ring-[#00d3f2]">
                             <Mail size={20} className="text-gray-400" />
 
-                            <input name="password" type="password" placeholder="Enter your email" className="w-full px-3 py-3 outline-none" />
+                            <input name="password" type="password" placeholder="Enter your password" className="w-full px-3 py-3 outline-none" />
                         </div>
                     </div>
 

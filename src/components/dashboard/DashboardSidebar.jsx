@@ -6,6 +6,7 @@ import { Button, Drawer } from "@heroui/react";
 import { ChartArea, Rocket, } from "lucide-react";
 import { label } from "motion/react-client";
 import { headers } from "next/headers";
+import Image from "next/image";
 import Link from "next/link";
 
 export default async function DashboardSidebar() {
@@ -29,7 +30,7 @@ export default async function DashboardSidebar() {
             { icon: ChartArea, label: "Overview", link: '/dashboard/admin/overview' },
             { icon: ChartArea, label: "Manage Users", link: '/dashboard/admin/manage-users' },
             { icon: ChartArea, label: "Manage Startup", link: '/dashboard/admin/manage-startup' },
-            { icon: ChartArea, label: " Transactions", link: '/dashboard/admin/transaction' },
+            { icon: ChartArea, label: " Transactions", link: '/dashboard/admin/view-transaction' },
 
         ],
         founder: [
@@ -42,6 +43,7 @@ export default async function DashboardSidebar() {
         ],
         collaborator: [
             { icon: ChartArea, label: "Overview", link: '/dashboard/collaborator/overview' },
+            { icon: ChartArea, label: "Browse Opportunities", link: '/dashboard/collaborator/browse-opportunities' },
             { icon: ChartArea, label: "My Applications", link: '/dashboard/collaborator/my-applications' },
             { icon: ChartArea, label: "Profile", link: '/dashboard/collaborator/profile' },
 
@@ -68,18 +70,34 @@ export default async function DashboardSidebar() {
                     <Bars />
                     Menu
                 </Button>
-                <Link href="/" className="flex items-center gap-2">
+                <div className="flex items-center justify-center">
 
-                    <div className="bg-cyan-400 p-1 rounded-lg ">
-                        <Rocket size={22} className="text-white" />
-                    </div>
-                    <div className=" p-3">
-                        <h1 className="text-2xl font-bold primary-text ">
-                            Venture<span className="text-cyan-400">Connect</span>
-                        </h1>
-                    </div>
+                    <Link href="/" className="flex items-center gap-2">
 
-                </Link>
+                        <div className="bg-cyan-400 p-1 rounded-lg ">
+                            <Rocket size={22} className="text-white" />
+                        </div>
+                        <div className=" p-3">
+                            <h1 className="text-2xl font-bold primary-text ">
+                                Venture<span className="text-cyan-400">Connect</span>
+
+                            </h1>
+                        </div>
+
+                    </Link>
+                    {
+                        user?.plan === "Premium" &&
+
+                        <Image
+
+                            src={'/icons8-crown-100.png'}
+                            alt="icon"
+                            height={20}
+                            width={20}
+                            className="object-cover"
+                        />
+                    }
+                </div>
 
 
 

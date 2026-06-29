@@ -28,7 +28,7 @@ const MyStartup = () => {
     // async use korar jonno tmr dekhte hbe await kon function ar under a lekha 
 
 
-    const { data, refetch } = useQuery({
+    const { data, isLoading, refetch } = useQuery({
         queryKey: ["my-startup"],
         queryFn: async () => {
             const result = await axios.get(`http://localhost:8000/startups?userEmail=${userEmail}`)
@@ -225,7 +225,8 @@ const MyStartup = () => {
             <Toaster />
 
             <div className='p-9 '>
-                <div className={`border max-w-2xl w-full p-7 rounded-md ${data ? "hidden" : ""}`}>
+                {isLoading && <div className='flex justify-center p-8'><span className="loading loading-spinner text-success"></span></div>}
+                <div className={`border max-w-2xl w-full p-7 rounded-md ${data || isLoading ? "hidden" : ""}`}>
                     <h1 className='text-white'>StartUp Profile</h1>
                     <form onSubmit={handleSubmit} className='text-black'>
                         <div className=''>
@@ -295,7 +296,7 @@ const MyStartup = () => {
                     </form>
                 </div>
                 {
-                    data &&
+                    !isLoading && data &&
                     <div className='max-w-xl border'>
                         <div className='flex p-3 justify-between'>
 

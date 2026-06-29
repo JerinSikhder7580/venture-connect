@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const FeatureStartups = () => {
-    const { data } = useQuery({
+    const { data, isLoading } = useQuery({
         queryKey: ["Featured-startups"],
         queryFn: async () => {
             const result = await axios.get(`http://localhost:8000/featured-startups`)
@@ -36,7 +36,11 @@ const FeatureStartups = () => {
                     <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 
                         {
-                            data?.map((startup) => (
+                            isLoading ? (
+                                <div className="col-span-full flex justify-center p-8">
+                                    <span className="loading loading-spinner text-success"></span>
+                                </div>
+                            ) : data?.map((startup) => (
 
                                 <div
                                     key={startup._id}

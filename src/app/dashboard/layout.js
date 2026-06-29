@@ -5,7 +5,7 @@ import { Toaster } from "react-hot-toast";
 export default function DashboardLayout({ children }) {
     return (
 
-        <div className="flex h-screen dark-bg">
+        <div className="flex min-h-screen dark-bg">
             <Toaster />
 
             <div className="flex gap-3 w-full">

@@ -43,11 +43,12 @@ const ManageStartupPost = () => {
             <Toaster />
             <h1 className='text-white text-3xl '>ManageStartupPost</h1>
             <p className='text-md text-gray-500 mb-2'>Manage startup post here!</p>
+            {isLoading && <div className='flex justify-center p-8'><span className="loading loading-spinner text-success"></span></div>}
             {!data?.[0] && !isLoading && <h1 className='text-white'>No Data Found</h1>}
             <div>
 
                 {
-                    data?.map((startup, index) =>
+                    !isLoading && data?.map((startup, index) =>
                         <div key={index} className='flex justify-between p-5 border items-center'>
                             <div className='space-y-2' >
 

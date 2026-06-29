@@ -39,7 +39,7 @@ const BrowseStartups = () => {
     const [search, setSearch] = useState("")
     const [filter, setFilter] = useState("")
 
-    const { data } = useQuery({
+    const { data, isLoading } = useQuery({
         queryKey: ["browse-startup", search, filter],
         queryFn: async () => {
             const result = await axios.get(`http://localhost:8000/startups?status=accept&search=${search}&filter=${filter}`)
@@ -98,7 +98,11 @@ const BrowseStartups = () => {
 
                 <div className='p-5 grid  grid-cols-3  gap-3'>
                     {
-                        data?.map((startup, index) =>
+                        isLoading ? (
+                            <div className='col-span-full flex justify-center p-8'>
+                                <span className="loading loading-spinner text-success"></span>
+                            </div>
+                        ) : data?.map((startup, index) =>
                             <Link href={`/startups/${startup._id}`} key={index} className='border rounded-md p-5'>
                                 <div className='flex gap-2 '>
                                     <Image

@@ -32,7 +32,7 @@ const FeatureOpportunities = () => {
                     <div className='mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3'>
                         {isLoading ? (
                             <div className='col-span-full rounded-xl border border-cyan-400/20 bg-white/10 p-8 text-center text-white'>
-                                Loading featured opportunities...
+                                <span className="loading loading-spinner text-success"></span>
                             </div>
                         ) : data?.length ? (
                             data.map((opportunity, index) => {

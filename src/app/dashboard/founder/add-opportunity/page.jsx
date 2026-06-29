@@ -50,24 +50,38 @@ const PostTeamRequirements = () => {
 
 
 
-    const { data: opportunity, isLoading: isLoading2, refetch } = useQuery({
-        queryKey: ["user-opportunity"],
+    // const { data: opportunity, isLoading: isLoading2, refetch } = useQuery({
+    //     queryKey: ["user-opportunity"],
+    //     queryFn: async () => {
+    //         console.log(userEmail)
+    //         const result = await axios.get(`http://localhost:8000/user/opportunity?email=${userEmail}`)
+    //         if (result.data) {
+    //             return 3 - Number(result.data?.opportunity)
+    //         }
+    //     },
+    //     enabled: userEmail ? true : false
+
+    // })
+    // 3 = 0
+
+    const { data: user, isLoading: isLoading2, refetch } = useQuery({
+        queryKey: ["user"],
         queryFn: async () => {
-            console.log(userEmail)
-            const result = await axios.get(`http://localhost:8000/user/opportunity?email=${userEmail}`)
-            if (result.data) {
-                return 3 - Number(result.data?.opportunity)
-            }
+            // console.log(userEmail)
+            const result = await axios.get(`http://localhost:8000/user?email=${userEmail}`)
+            console.log(result)
+            return result.data
         },
         enabled: userEmail ? true : false
 
     })
+    console.log(user?.opportunity)
     // 3 = 0
     // 2 = 1 
     // 1 = 2
     // 0 = 3
-    if (isLoading && isLoading2) {
-        return <div className="flex items-center justify-center h-full"><span className="loading loading-spinner text-info"></span></div>
+    if (isLoading || isLoading2) {
+        return <div className="flex items-center justify-center h-full"><span className="loading loading-spinner text-success"></span></div>
     }
 
 
@@ -81,13 +95,13 @@ const PostTeamRequirements = () => {
     // #00142c
     const handlePostOpportunity = (e) => {
         e.preventDefault()
-        if (opportunity > 2) {
+        if (user?.opportunity > 2) {
             return
 
         }
 
         const formData = new FormData(e.target)
-        formData.append("startupName",startup.name)
+        formData.append("startupName", startup.name)
         formData.append("userEmail", userEmail)
         const data = Object.fromEntries(formData.entries())
         toast.promise(async () => {
@@ -113,13 +127,16 @@ const PostTeamRequirements = () => {
             <Toaster />
 
             <h1 className='text-white text-xl mb-3'>Post Team Requirement</h1>
-            <h1 className=" flex justify-end text-[#ff7900]">{opportunity}/3 Opportunities</h1>
+            {user?.email && user.plan === "free" &&
+
+                < h1 className=" flex justify-end text-[#ff7900]">{(3 - user?.opportunity)}/3 Opportunities</h1>
+            }
             {
                 isStartup ?
                     <div className="grid w-full gap-6 xl:grid-cols-[minmax(0,420px)_minmax(0,1fr)]">
                         <div className="w-full shrink-0 bg-[#001836] p-5 shadow-2xl">
                             <div className="card-body">
-                                <form disabled onSubmit={handlePostOpportunity} className={`[&_input]:bg-white/10 [&_select]:bg-white/10 ${!isStartup ? "hidden" : ""}`}>
+                                <form onSubmit={handlePostOpportunity} className={`[&_input]:bg-white/10 [&_select]:bg-white/10 ${!isStartup ? "hidden" : ""}`}>
 
                                     <fieldset className="fieldset">
                                         <label className="label text-white">Role Title</label>
@@ -162,69 +179,80 @@ const PostTeamRequirements = () => {
 
                                         <div><a className="  text-white">Application Deadline</a></div>
                                         <input type="date" className="input border text-gray-500" name="applicationDeadline" />
-                                        <button disabled={opportunity > 2} className="btn btn-neutral mt-4">Post Opportunity</button>
+                                        {/* {console.log(user?.opportunity)} */}
+                                        <button disabled={user?.opportunity === 0 && user.plan === "free"} className="btn btn-neutral mt-4">Post Opportunity</button>
                                     </fieldset>
                                 </form>
                             </div>
                         </div>
 
                         {/* premium */}
+                        {user?.opportunity === 0 && user?.plan === 'free' &&
 
-                        <section className="relative overflow-hidden border border-[#ff7900]/40 bg-[#001836] p-6 shadow-2xl shadow-orange-950/20">
-                            <div className="absolute right-0 top-0 h-28 w-28 rounded-bl-full bg-[#ff7900]/20"></div>
-                            <div className="relative space-y-5 p-4">
-                                <div className="flex flex-wrap items-center justify-between gap-3">
-                                    <span className="rounded-full border border-[#ff7900]/50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#ff7900]">
-                                        Premium
-                                    </span>
-                                    <span className="text-sm font-semibold text-white/70">Best for growing teams</span>
-                                </div>
-
-                                <div>
-                                    <h2 className="text-2xl font-bold text-white">Upgrade to Premium</h2>
-                                    <p className="mt-2 max-w-xl text-sm leading-6 text-gray-300">
-                                        Get more room to post roles, promote urgent openings, and reach collaborators faster.
-                                    </p>
-                                </div>
-
-                                <div className="grid gap-3 sm:grid-cols-3">
-                                    <div className="border border-white/10 bg-white/5 p-4">
-                                        <h3 className="text-2xl font-bold text-white">10+</h3>
-                                        <p className="mt-1 text-sm text-gray-400">active opportunities</p>
+                            < section className="relative overflow-hidden border border-[#ff7900]/40 bg-[#001836] p-6 shadow-2xl shadow-orange-950/20">
+                                <div className="absolute right-0 top-0 h-28 w-28 rounded-bl-full bg-[#ff7900]/20"></div>
+                                <div className="relative space-y-5 p-4">
+                                    <div className="flex flex-wrap items-center justify-between gap-3">
+                                        <span className="rounded-full border border-[#ff7900]/50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#ff7900]">
+                                            Premium
+                                        </span>
+                                        <span className="text-sm font-semibold text-white/70">Best for growing teams</span>
                                     </div>
-                                    <div className="border border-white/10 bg-white/5 p-4">
-                                        <h3 className="text-2xl font-bold text-white">2x</h3>
-                                        <p className="mt-1 text-sm text-gray-400">profile visibility</p>
+
+                                    <div>
+                                        <h2 className="text-2xl font-bold text-white">Upgrade to Premium</h2>
+                                        <p className="mt-2 max-w-xl text-sm leading-6 text-gray-300">
+                                            Get more room to post roles, promote urgent openings, and reach collaborators faster.
+                                        </p>
                                     </div>
-                                    <div className="border border-white/10 bg-white/5 p-4">
-                                        <h3 className="text-2xl font-bold text-white">Top</h3>
-                                        <p className="mt-1 text-sm text-gray-400">featured placement</p>
+
+                                    <div className="grid gap-3 sm:grid-cols-3">
+                                        <div className="border border-white/10 bg-white/5 p-4">
+                                            <h3 className="text-2xl font-bold text-white">10+</h3>
+                                            <p className="mt-1 text-sm text-gray-400">active opportunities</p>
+                                        </div>
+                                        <div className="border border-white/10 bg-white/5 p-4">
+                                            <h3 className="text-2xl font-bold text-white">2x</h3>
+                                            <p className="mt-1 text-sm text-gray-400">profile visibility</p>
+                                        </div>
+                                        <div className="border border-white/10 bg-white/5 p-4">
+                                            <h3 className="text-2xl font-bold text-white">Top</h3>
+                                            <p className="mt-1 text-sm text-gray-400">featured placement</p>
+                                        </div>
+                                    </div>
+
+                                    <ul className="space-y-3 text-sm text-gray-200">
+                                        <li className="flex gap-3">
+                                            <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#ff7900]"></span>
+                                            Highlight premium opportunities in search results.
+                                        </li>
+                                        <li className="flex gap-3">
+                                            <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#ff7900]"></span>
+                                            Keep hiring momentum when your free posts are used.
+                                        </li>
+                                        <li className="flex gap-3">
+                                            <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#ff7900]"></span>
+                                            Build a stronger founder presence with priority exposure.
+                                        </li>
+                                    </ul>
+
+                                    <div className="flex flex-wrap items-center gap-4 pt-2">
+                                        <form action="/api/checkout_sessions" method="POST">
+                                            <section>
+                                                <button className="bg-cyan-400 btn border-none" type="submit" role="link">
+                                                    Upgrade to premium <p> $9/per month</p>
+                                                </button>
+                                            </section>
+                                        </form>
+
+                                        <p className="text-sm text-gray-400">Premium checkout coming soon</p>
                                     </div>
                                 </div>
+                            </section>
 
-                                <ul className="space-y-3 text-sm text-gray-200">
-                                    <li className="flex gap-3">
-                                        <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#ff7900]"></span>
-                                        Highlight premium opportunities in search results.
-                                    </li>
-                                    <li className="flex gap-3">
-                                        <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#ff7900]"></span>
-                                        Keep hiring momentum when your free posts are used.
-                                    </li>
-                                    <li className="flex gap-3">
-                                        <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#ff7900]"></span>
-                                        Build a stronger founder presence with priority exposure.
-                                    </li>
-                                </ul>
+                        }
 
-                                <div className="flex flex-wrap items-center gap-4 pt-2">
-                                    <button type="button" className="btn border-none bg-[#ff7900] px-6 text-white hover:bg-[#ff8f2a]">
-                                        Upgrade Now
-                                    </button>
-                                    <p className="text-sm text-gray-400">Premium checkout coming soon</p>
-                                </div>
-                            </div>
-                        </section>
+
                     </div>
                     :
 
@@ -238,7 +266,7 @@ const PostTeamRequirements = () => {
                     </div>
             }
 
-        </div>
+        </div >
     );
 };
 

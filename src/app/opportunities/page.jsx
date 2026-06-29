@@ -4,9 +4,14 @@ import useRole from '@/hooks/useRole';
 import { SealCheck } from '@gravity-ui/icons';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { BriefcaseBusiness, CalendarDays, Clock3, Search, SlidersHorizontal, Sparkles, Users } from 'lucide-react';
+import { BriefcaseBusiness, CalendarDays, ChevronLeft, ChevronRight, Clock3, Search, SlidersHorizontal, Sparkles, Users } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { MdArrowBackIos } from "react-icons/md";
+import { IoIosArrowForward } from "react-icons/io";
+import { button, li } from 'motion/react-client';
+
+
 
 const workTypes = ["Remote", "On-site", "Hybrid", "Flexible", "Part-time Remote", "Full-time Remote", "Internship"];
 // const industries = [
@@ -39,17 +44,37 @@ const industries = [
 ];
 
 const Opportunities = () => {
+
     const { role, roleLoading } = useRole() // role,roleLoading 
     const [search, setSearch] = useState("");
     const [workType, setWorkType] = useState("");
     const [industry, setIndustry] = useState("")
+    const [pageState, setPageState] = useState(1)
+    const [totalOpportunityCount, setTotalOpportunityCount] = useState(() => {
+        const result = localStorage.getItem("totalOpportunityCount")
+        if (result) return result
+        return undefined
+    })
+    const handleOpportunityCount = (num) => {
+        localStorage.setItem("totalOpportunityCount", num)
+        setTotalOpportunityCount(num)
+    }
+
+    useEffect(() => {
+        return () => localStorage.removeItem("totalOpportunityCount")
+    }, [])
 
     console.log(role)
+    const limit = 9
+
 
     const { data, isLoading } = useQuery({
-        queryKey: ["all-opportunity", search, workType, industry],
+        queryKey: ["all-opportunity", search, workType, industry, pageState],
         queryFn: async () => {
-            const result = await axios.get(`http://localhost:8000/opportunity?search=${search}&workType=${workType}&industry=${industry}`)
+            const result = await axios.get(`http://localhost:8000/opportunity?search=${search}&workType=${workType}&industry=${industry}&limit=${limit}&skip=${(pageState - 1) * limit}`)
+            if (result?.data?.dataCount && !search) {
+                handleOpportunityCount(result.data.dataCount)
+            }
             return result.data
         }
     })
@@ -64,7 +89,7 @@ const Opportunities = () => {
     console.log(roleLoading)
     console.log(!roleLoading && role === "collaborator")
 
-    
+
 
 
 
@@ -85,12 +110,12 @@ const Opportunities = () => {
 
                     <div className='grid grid-cols-3 gap-3 rounded-xl border border-cyan-400/20 bg-white/10 p-4 text-center'>
                         <div>
-                            <h2 className='text-2xl font-bold text-white'>{data?.length}</h2>
+                            <h2 className='text-2xl font-bold text-white'>{totalOpportunityCount}</h2>
                             <p className='text-xs text-gray-400'>Total</p>
                         </div>
                         <div>
                             {/* kaj baki */}
-                            <h2 className='text-2xl font-bold text-cyan-300'>{data?.length}</h2>
+                            <h2 className='text-2xl font-bold text-cyan-300'>{data?.result.length}</h2>
                             <p className='text-xs text-gray-400'>Showing</p>
                         </div>
                         <div>
@@ -130,7 +155,7 @@ const Opportunities = () => {
                         <SlidersHorizontal size={20} className='text-cyan-300' />
                         <select
                             defaultValue={"All industries"}
-                            onChange={(e)=>setIndustry(e.target.value)}
+                            onChange={(e) => setIndustry(e.target.value)}
                             className='w-full bg-transparent text-sm outline-none'
                         >
                             <option className='text-black' value=''>All Industries</option>
@@ -145,10 +170,10 @@ const Opportunities = () => {
                     <div className='grid gap-4 md:grid-cols-2 xl:grid-cols-3'>
                         {isLoading ? (
                             <div className='col-span-full rounded-xl border border-cyan-400/20 bg-white/10 p-8 text-center text-white'>
-                                Loading opportunities...
+                                <span className="loading loading-spinner text-success"></span>
                             </div>
-                        ) : data?.length ? (
-                            data.map((opportunity, index) => (
+                        ) : data.result?.length ? (
+                            data.result.map((opportunity, index) => (
                                 <article key={opportunity._id || index} className='rounded-xl border border-cyan-400/20 bg-white/10 p-5 shadow-xl shadow-black/10'>
                                     <div className='flex items-start justify-between gap-3'>
                                         <div>
@@ -180,15 +205,35 @@ const Opportunities = () => {
                                         </p>
                                     </div>
                                     {!roleLoading && role === "collaborator" && <Link href={`/opportunities/${opportunity._id}`} className='w-full btn bg-cyan-400 border-none shadow-none'>View Details</Link>}
+
+
                                 </article>
+
                             ))
-                        ) : (
-                            <div className='col-span-full rounded-xl border border-cyan-400/20 bg-white/10 p-8 text-center'>
-                                <h2 className='text-xl font-semibold text-white'>No opportunities found</h2>
-                                <p className='mt-2 text-gray-400'>Try changing the search or filter fields.</p>
-                            </div>
-                        )}
+
+
+                        )
+
+                            : (
+                                <div className='col-span-full rounded-xl border border-cyan-400/20 bg-white/10 p-8 text-center'>
+                                    <h2 className='text-xl font-semibold text-white'>No opportunities found</h2>
+                                    <p className='mt-2 text-gray-400'>Try changing the search or filter fields.</p>
+                                </div>
+                            )}
                     </div>
+                    {totalOpportunityCount &&
+
+                        <div className='text-center text-white flex items-center justify-center gap-3 mt-4'>
+                            <button onClick={() => setPageState(pageState - 1)} disabled={pageState === 1} className='bg-cyan-400/10 border disabled:opacity-60 border-cyan-400/80 text-cyan-400 p-2 rounded-md items-center justify-center'><ChevronLeft /></button>
+                            {
+                                [...Array(Math.ceil(Number(totalOpportunityCount) / limit))].map((_, index) =>
+                                    <button onClick={() => setPageState(index + 1)} className='bg-cyan-400/80 px-2 rounded-md' key={index}>{index + 1}</button>
+                                )
+                            }
+                            <button onClick={() => setPageState(pageState + 1)} disabled={pageState === Math.ceil(Number(totalOpportunityCount) / limit)} className='bg-cyan-400/10 border disabled:opacity-60 border-cyan-400/80 text-cyan-400 p-2 rounded-md items-center justify-center'><ChevronRight /></button>
+                        </div>
+                    }
+
                 </div>
             </section>
         </div>

@@ -1,16 +1,64 @@
 "use client"
+import useUserEmail from '@/hooks/useUserEmail';
 import { authClient } from '@/lib/auth-client';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { router } from 'better-auth/api';
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { Router } from 'next/router';
+import { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 const StartupDetailsPage = () => {
+    const router = useRouter()
     const { id } = useParams()
     console.log(id)
+    const userEmail = useUserEmail()
 
     // const { data: session } = authClient.useSession()
     // const userEmail = session?.user?.email
+    const [isApplyModalOpen, setIsApplyModalOpen] = useState(false)
+    const [intentApplications, setIntentApplication] = useState()
+    const handleApplySubmit = (e) => { // permission
+        e.preventDefault()
+        const formData = new FormData(e.target)
+        // where the data coming from 
+        formData.append('opportunityId', intentApplications._id)
+        formData.append('opportunityTitle', intentApplications.title)
+        formData.append("userEmail", userEmail)
+        formData.append("startupName", intentApplications.startupName)
+        formData.append("status", "pending")
+
+
+
+        const applicationData = Object.fromEntries(formData)
+        console.log(applicationData)
+
+        toast.promise(
+            axios.post("http://localhost:8000/applications", applicationData),
+            {
+                loading: "Applying",
+                success: () => {
+                    router.push("/dashboard/collaborator/my-applications")
+                    return "Applied successfully"
+                },
+                error: "Failed to Apply"
+            }
+        )
+
+
+        // closing modal
+        setIsApplyModalOpen(false)
+    }
+
+    const handleModal = (opportunity, isModal) => {
+        setIsApplyModalOpen(isModal)
+        setIntentApplication(opportunity)
+
+        console.log(opportunity)
+
+    }
 
 
     const { data, isLoading, error } = useQuery({
@@ -36,11 +84,12 @@ const StartupDetailsPage = () => {
     console.log(data)
     return (
         <div className='dark-bg min-h-screen py-10'>
+            <Toaster />
             <section>
                 {
                     isLoading ? (
                         <div className='flex min-h-[60vh] items-center justify-center'>
-                            <h1 className='text-xl font-semibold text-white'>Loading startup details...</h1>
+                            <span className="loading loading-spinner text-success"></span>
                         </div>
                     ) : (
                         <div className='space-y-6'>
@@ -108,14 +157,15 @@ const StartupDetailsPage = () => {
                                         <h2 className='text-2xl font-bold text-white'>Startup Roles</h2>
                                         <p className='text-sm text-gray-400'>Available opportunities for this startup.</p>
                                     </div>
-                                    <span className='w-fit rounded-full border border-cyan-400/40 px-4 py-2 text-sm font-semibold text-cyan-300'>
+                                    <span className='w-fit rounded-full border border-cyan-400/40 px-4 py-2 text-sm font-semibold text-cyan-300 '>
                                         {roles?.length || 0} Roles
                                     </span>
                                 </div>
 
+
                                 {
                                     roleLoading ? (
-                                        <p className='text-gray-300'>Loading roles...</p>
+                                        <span className="loading loading-spinner text-success"></span>
                                     ) : roles?.length ? (
                                         <div className='grid gap-4 lg:grid-cols-2'>
                                             {
@@ -145,6 +195,7 @@ const StartupDetailsPage = () => {
                                                                 <h4 className='mt-1 text-white'>{role.requireSkills}</h4>
                                                             </div>
                                                         </div>
+                                                        <button onClick={() => handleModal(role, true)} className='btn w-full bg-cyan-400/60 border-none '> Apply now</button>
                                                     </div>
                                                 ))
                                             }
@@ -157,6 +208,74 @@ const StartupDetailsPage = () => {
                         </div>
                     )
                 }
+                <div className={` backdrop-blur-md  modal ${isApplyModalOpen ? 'modal-open' : ''}`}>
+                    <div className='modal-box max-w-2xl dark-bg text-white hover:shadow-sm hover:shadow-blue-500/50 transition duration-300  '>
+                        <h2 className='text-2xl font-bold'>Apply for this opportunity</h2>
+                        <p className='mt-2 text-sm text-gray-500'>
+                            {data?.title || 'Opportunity'} at {data?.startupName || 'this startup'}
+                        </p>
+
+                        <form onSubmit={handleApplySubmit} className='mt-6 space-y-4'>
+                            <div>
+                                <label className='text-sm font-semibold'>Applicant Email</label>
+                                <input
+                                    type='email'
+                                    name='applicantEmail'
+                                    placeholder='you@example.com'
+                                    required
+                                    className='input mt-2 w-full border-gray-200 bg-white/10'
+                                />
+                            </div>
+
+                            <div>
+                                <label className='text-sm font-semibold'>Portfolio Link</label>
+                                <input
+                                    type='url'
+                                    name='portfolioLink'
+                                    placeholder='https://your-portfolio.com'
+                                    required
+                                    className='input mt-2 w-full border-gray-200 bg-white/10'
+                                />
+                            </div>
+
+                            <div>
+                                <label className='text-sm font-semibold'>Motivation Message</label>
+                                <textarea
+                                    name='motivationMessage'
+                                    placeholder='Write a short message about why you want to join...'
+                                    required
+                                    rows={5}
+                                    className='textarea mt-2 w-full resize-none border-gray-200 bg-white/10'
+                                />
+                            </div>
+
+                            <div className='modal-action'>
+                                <button
+                                    type='button'
+                                    onClick={() => setIsApplyModalOpen(false)}
+                                    className='btn border-gray-200 bg-white text-[#00142c] shadow-none'
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type='submit'
+                                    className='btn border-none bg-cyan-400 text-[#00142c] shadow-none hover:bg-cyan-300'
+                                >
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <button
+                        type='button'
+                        aria-label='Close application modal'
+                        onClick={() => setIsApplyModalOpen(false)}
+                        className='modal-backdrop'
+                    >
+                        close
+                    </button>
+                </div>
+
             </section>
 
         </div>

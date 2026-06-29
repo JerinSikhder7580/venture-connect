@@ -1,6 +1,30 @@
-import React from 'react';
+"use client"
+import useUserEmail from "@/hooks/useUserEmail";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import {  format } from "date-fns";
 
 const MyApplicationsPage = () => {
+
+    const userEmail = useUserEmail()
+
+    const { data: applications, isLoading } = useQuery({
+        queryKey: ["my-application"],
+        queryFn: async () => {
+            const result = await axios.get(`http://localhost:8000/applications?userEmail=${userEmail}`)
+            console.log(result.data)
+            return result.data
+        },
+        enabled: userEmail ? true : false
+    })
+    // variable === variable true
+    // variable === obj ar key false
+
+
+    
+
+
+
     return (
         <div className='min-h-screen px-4 py-8 text-white sm:px-6 lg:px-8'>
             <div className='mx-auto max-w-6xl'>
@@ -24,36 +48,34 @@ const MyApplicationsPage = () => {
                                 </tr>
                             </thead>
                             <tbody className='divide-y divide-white/10'>
-                                <tr className='transition hover:bg-white/5'>
-                                    <td className='px-6 py-5 text-sm font-medium text-white'>Frontend Developer</td>
-                                    <td className='px-6 py-5 text-sm text-gray-300'>NovaTech Labs</td>
-                                    <td className='px-6 py-5 text-sm text-gray-300'>June 18, 2026</td>
-                                    <td className='px-6 py-5'>
-                                        <span className='rounded-full bg-amber-400/15 px-3 py-1 text-xs font-semibold text-amber-200'>
-                                            Pending
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr className='transition hover:bg-white/5'>
-                                    <td className='px-6 py-5 text-sm font-medium text-white'>UI/UX Designer</td>
-                                    <td className='px-6 py-5 text-sm text-gray-300'>BrightSeed</td>
-                                    <td className='px-6 py-5 text-sm text-gray-300'>June 12, 2026</td>
-                                    <td className='px-6 py-5'>
-                                        <span className='rounded-full bg-emerald-400/15 px-3 py-1 text-xs font-semibold text-emerald-200'>
-                                            Accepted
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr className='transition hover:bg-white/5'>
-                                    <td className='px-6 py-5 text-sm font-medium text-white'>Marketing Strategist</td>
-                                    <td className='px-6 py-5 text-sm text-gray-300'>LaunchWave</td>
-                                    <td className='px-6 py-5 text-sm text-gray-300'>June 04, 2026</td>
-                                    <td className='px-6 py-5'>
-                                        <span className='rounded-full bg-rose-400/15 px-3 py-1 text-xs font-semibold text-rose-200'>
-                                            Rejected
-                                        </span>
-                                    </td>
-                                </tr>
+                                {isLoading ? (
+                                    <tr>
+                                        <td colSpan={4} className='px-6 py-8 text-center'>
+                                            <span className="loading loading-spinner text-success"></span>
+                                        </td>
+                                    </tr>
+                                ) : applications?.map((application) => (
+                                    <tr
+                                        key={`${application.opportunityTitle}-${application.appliedAt}`}
+                                        className='transition hover:bg-white/5'
+                                    >
+                                        <td className='px-6 py-5 text-sm font-medium text-white'>
+                                            {application.opportunityTitle}
+                                        </td>
+                                        <td className='px-6 py-5 text-sm text-gray-300'>
+                                            {application.startupName}
+                                        </td>
+                                        <td className='px-6 py-5 text-sm text-gray-300'>
+                                            {/* {formatDate(application.appliedAt.$date)} */}
+                                            {format(application.appliedAt, 'PP')}
+                                        </td>
+                                        <td className='px-6 py-5'>
+                                            <span className='rounded-full bg-amber-400/15 px-3 py-1 text-xs font-semibold capitalize text-amber-200'>
+                                                {application.status}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
                     </div>

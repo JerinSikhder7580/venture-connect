@@ -17,16 +17,16 @@ const OpportunityDetailsPage = () => {
     const [isApplyModalOpen, setIsApplyModalOpen] = useState(false)
 
 
-    const { data: application } = useQuery({
-        queryKey: ["application"],
+    const { data: application, isLoading: applicationLoading } = useQuery({
+        queryKey: ["application", id],
         queryFn: async () => {
             const result = await axios.get(`http://localhost:8000/applications?userEmail=${userEmail}`)
+            console.log(result)
             return result.data
-
         },
         enabled: userEmail ? true : false
-
     })
+    // console.log(application)
 
     const { data, isLoading } = useQuery({ // specific opportunity
         queryKey: ["opportunity-details", id],
@@ -42,6 +42,13 @@ const OpportunityDetailsPage = () => {
         .filter(Boolean);
 
     const handleApplications = () => {
+        let isApplied
+        application.forEach(items => {
+            if (items.opportunityId === data._id) {
+                isApplied = true
+            }
+        })
+        if (isApplied) return toast.error("Already applied")
         setIsApplyModalOpen(true)
         console.log('apply')
 
@@ -53,6 +60,10 @@ const OpportunityDetailsPage = () => {
         formData.append('opportunityId', data._id)
         formData.append('opportunityTitle', data.title)
         formData.append("userEmail", userEmail)
+        formData.append("startupName", data.startupName)
+        formData.append("status", "pending")
+
+
 
         const applicationData = Object.fromEntries(formData)
 
@@ -77,10 +88,11 @@ const OpportunityDetailsPage = () => {
 
     return (
         <div className='dark-bg min-h-screen py-12'>
+            <Toaster />
             <section>
-                {isLoading ? (
+                {isLoading || applicationLoading ? (
                     <div className='mx-auto max-w-4xl rounded-xl border border-cyan-400/20 bg-white/10 p-8 text-center text-white'>
-                        Loading opportunity details...
+                        <span className="loading loading-spinner text-success"></span>
                     </div>
                 ) : data ? (
                     <article className='mx-auto max-w-4xl overflow-hidden rounded-xl border border-cyan-400/20 bg-white/10 shadow-2xl shadow-black/20'>
