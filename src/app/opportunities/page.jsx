@@ -50,9 +50,13 @@ const Opportunities = () => {
     const [workType, setWorkType] = useState("");
     const [industry, setIndustry] = useState("")
     const [pageState, setPageState] = useState(1)
+
     const [totalOpportunityCount, setTotalOpportunityCount] = useState(() => {
-        const result = localStorage.getItem("totalOpportunityCount")
-        if (result) return result
+        if (typeof window !== "undefined") {
+            const result = localStorage.getItem("totalOpportunityCount")
+            return result ? Number(result) : undefined
+        }
+
         return undefined
     })
     const handleOpportunityCount = (num) => {

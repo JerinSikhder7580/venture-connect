@@ -3,23 +3,21 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
-const fallbackOverview = {
-    revenue: 900,
-    totalOpportunityCount: 26,
-    totalStartupsCount: 13,
-    totalUsersCount: 20,
-};
+
 
 const AdminOverview = () => {
-    const { data, isLoading, isError } = useQuery({
+    const { data: overview, isLoading, isError } = useQuery({
         queryKey: ["admin-overview"],
         queryFn: async () => {
             const result = await axios.get("http://localhost:8000/admin/dashboard");
             return result.data;
         }
     });
+    if (isLoading) return <div className='flex justify-center p-8'><span className="loading loading-spinner text-success"></span></div>
+    if (!overview) return
 
-    const overview = data || fallbackOverview;
+
+    // const overview = data || fallbackOverview;
 
     const stats = [
         {
@@ -47,6 +45,7 @@ const AdminOverview = () => {
             helper: "Published collaboration opportunities",
         },
     ];
+    console.log(isLoading)
 
     return (
         <div className='space-y-6 text-white'>
@@ -55,8 +54,8 @@ const AdminOverview = () => {
                 <p className='mt-1 text-sm text-gray-400'>Track platform growth, activity, and revenue at a glance.</p>
             </div>
 
-            {isLoading && <div className='flex justify-center p-8'><span className="loading loading-spinner text-success"></span></div>}
-            {isError && <p className='text-sm text-amber-300'>Showing sample overview data because the dashboard API is unavailable.</p>}
+            {/* {isLoading && } */}
+            {/* {isError && <p className='text-sm text-amber-300'>Showing sample overview data because the dashboard API is unavailable.</p>} */}
 
             <div className='grid gap-4 sm:grid-cols-2 xl:grid-cols-4'>
                 {

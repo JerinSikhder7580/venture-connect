@@ -9,11 +9,11 @@ const Root = ({children}) => {
 
     return (
         <QueryClientProvider client={queryClient}>
-            <div className="min-h-full flex flex-col h-dvh dark">
+            <div className="min-h-dvh flex flex-col overflow-x-hidden dark">
 
 
                 <Navbar />
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
 
                     {children}
                 </div>

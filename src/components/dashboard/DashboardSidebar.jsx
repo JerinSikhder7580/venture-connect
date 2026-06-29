@@ -17,13 +17,7 @@ export default async function DashboardSidebar() {
     const user = session?.user
     const role = user?.role?.toLowerCase() || "collaborator";
 
-    // middleware / proxy private route
-    //     My Startup
-    // Add Opportunity
-    // Manage Opportunities
-    // Applications
-
-
+   
 
     const dashboardItems = {
         admin: [
@@ -94,7 +88,7 @@ export default async function DashboardSidebar() {
 
 
 
-                <nav className="flex flex-col gap-1 w-55">
+                <nav className="sm:flex flex-col gap-1 w-55 hidden ">
                     {navItems?.map((item) => (
                         <Link href={item.link}
                             key={item.label}
@@ -120,15 +114,15 @@ export default async function DashboardSidebar() {
 
                                 <nav className="flex flex-col gap-1">
                                     {navItems?.map((item) => (
-                                        
-                                        <button
+
+                                        <Link href={item.label}
                                             key={item.label}
                                             className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-default"
                                             type="button"
                                         >
                                             <item.icon className="size-5 text-muted" />
                                             {item.label}
-                                        </button>
+                                        </Link>
 
                                     ))}
                                 </nav>

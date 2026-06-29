@@ -15,9 +15,9 @@ const Banner = () => {
                 <div >
 
 
-                    <div className="flex items-center h-230 z-10 bg-[url('/banner.png')] bg-center bg-no-repeat bg-cover">
-                        <div className='p-8'>
-                            <div className='  space-y-2 '>
+                    <div className="flex min-h-[620px] items-center bg-[url('/banner.png')] bg-center bg-no-repeat bg-cover py-20 sm:min-h-[720px] lg:min-h-[860px]">
+                        <div className='w-full max-w-4xl px-4 sm:px-8 lg:px-12'>
+                            <div className='space-y-3'>
                                 <motion.div
                                     initial={{ y: 40, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
@@ -25,15 +25,15 @@ const Banner = () => {
                                     whileInView={{ once: true }}
 
                                 >
-                                    <h1 className='text-5xl font-bold text-white'>Build Your People.</h1>
-                                    <h1 className='font-bold text-5xl text-white'>Build Something <span className='text-[#00d3f2] '>Great</span></h1>
+                                    <h1 className='text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl'>Build Your People.</h1>
+                                    <h1 className='text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl'>Build Something <span className='text-[#00d3f2] '>Great</span></h1>
                                 </motion.div>
                                 <motion.p
                                     initial={{ y: 40, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     transition={{ duration: .6, delay: .1 }}
                                     whileInView={{ once: true }}
-                                    className='text-gray-400 text-xl font-semibold'>VentureConnect connects founders with talented collaborators to build <br /> amazing startups together.Post opportunities,discover ideas and build yours dream teams</motion.p>
+                                    className='max-w-2xl text-base font-semibold leading-7 text-gray-300 sm:text-lg lg:text-xl'>VentureConnect connects founders with talented collaborators to build amazing startups together. Post opportunities, discover ideas and build your dream teams.</motion.p>
                             </div>
 
                             
@@ -42,9 +42,9 @@ const Banner = () => {
                                 animate={{ y: 0, opacity: 1 }}
                                 transition={{ duration: .6, delay: .2 }}
                                 whileInView={{ once: true }}
-                                className='flex gap-2 mt-4'>
-                                <Link href={"/opportunities"} className='text-white items-center justify-center flex p-2  secondary-bg rounded-md'>Explore opportunities <ArrowRight  /></Link>
-                                <Button className='background rounded-md p-6 flex items-center justify-center'>How it works</Button>
+                                className='mt-6 flex flex-col gap-3 sm:flex-row'>
+                                <Link href={"/opportunities"} className='flex items-center justify-center gap-2 rounded-md px-5 py-3 text-white secondary-bg'>Explore opportunities <ArrowRight  /></Link>
+                                <Button className='background rounded-md px-5 py-6 flex items-center justify-center'>How it works</Button>
                             </motion.div>
                         </div>
                     </div>

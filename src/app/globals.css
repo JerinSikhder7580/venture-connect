@@ -12,8 +12,20 @@
 
 section {
     max-width: 1600px;
-    padding: 0 20px;
+    padding: 0 16px;
     margin: auto;
+}
+
+@media (min-width: 640px) {
+    section {
+        padding: 0 24px;
+    }
+}
+
+@media (min-width: 1024px) {
+    section {
+        padding: 0 32px;
+    }
 }
 
 .dark .dark-bg {
