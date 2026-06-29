@@ -9,7 +9,6 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { MdArrowBackIos } from "react-icons/md";
 import { IoIosArrowForward } from "react-icons/io";
-import { button, li } from 'motion/react-client';
 
 
 

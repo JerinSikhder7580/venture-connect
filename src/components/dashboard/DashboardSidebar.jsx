@@ -4,7 +4,6 @@ import { auth } from "@/lib/auth";
 import { Bars, Bell, Envelope, Gear, House, Magnifier, Person } from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";
 import { ChartArea, Rocket, } from "lucide-react";
-import { label } from "motion/react-client";
 import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";

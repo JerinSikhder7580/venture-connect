@@ -2,7 +2,6 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Search } from 'lucide-react';
-import { h1 } from 'motion/react-client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';

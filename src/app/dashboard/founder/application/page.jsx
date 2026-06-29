@@ -2,7 +2,6 @@
 import useUserEmail from "@/hooks/useUserEmail";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { tr } from "motion/react-client";
 import toast, { Toaster } from "react-hot-toast";
 
 const Application = () => {

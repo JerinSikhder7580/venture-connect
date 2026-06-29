@@ -1,5 +1,4 @@
 import DashboardSidebar from "@/components/dashboard/DashboardSidebar";
-import { div } from "motion/react-client";
 import { Toaster } from "react-hot-toast";
 
 export default function DashboardLayout({ children }) {

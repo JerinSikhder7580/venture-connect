@@ -6,7 +6,6 @@ import axios from 'axios';
 import { success } from 'better-auth';
 import { error } from 'better-auth/api';
 import { Plug, Plus, PlusIcon, SquarePen, Trash2 } from 'lucide-react';
-import { option, textarea } from 'motion/react-client';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';

@@ -3,7 +3,6 @@ import axios from 'axios'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { CheckCircle2, CreditCard, Mail, ReceiptText } from 'lucide-react'
-import { motion } from 'motion/react-client'
 
 // import { stripe } from '../../lib/stripe'
 
@@ -54,10 +53,7 @@ export default async function Success({ searchParams }) {
 
         return (
             <section id="success" className="min-h-screen bg-[#00142c] px-4 py-12 text-white sm:px-6 lg:px-8">
-                <motion.div
-                    initial={{ opacity: 0, y: 24, scale: 0.98 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.45, ease: "easeOut" }}
+                <div
                     className="mx-auto max-w-4xl overflow-hidden rounded-2xl border border-cyan-400/30 bg-white/10 shadow-2xl shadow-cyan-950/30"
                 >
                     <div className="border-b border-white/10 p-6 text-center sm:p-8">
@@ -129,7 +125,7 @@ export default async function Success({ searchParams }) {
                             </a>
                         </div>
                     </div>
-                </motion.div>
+                </div>
             </section>
         )
     }
