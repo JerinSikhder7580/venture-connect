@@ -623,8 +623,6 @@ const PostTeamRequirements = () => {
 
                             </h1>
 
-
-
                             <Link
 
                                 href={"/dashboard/founder/my-startup"}

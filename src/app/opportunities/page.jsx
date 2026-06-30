@@ -13,15 +13,7 @@ import { IoIosArrowForward } from "react-icons/io";
 
 
 const workTypes = ["Remote", "On-site", "Hybrid", "Flexible", "Part-time Remote", "Full-time Remote", "Internship"];
-// const industries = [
-//     "Full-time",
-//     "Part-time",
-//     "Freelance",
-//     "Contract",
-//     "Internship",
-//     "Volunteer",
-//     "Co-founder"
-// ];
+
 const industries = [
     "Technology",
     "Artificial Intelligence",
