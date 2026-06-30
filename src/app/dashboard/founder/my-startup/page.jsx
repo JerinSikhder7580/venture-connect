@@ -1,11 +1,7 @@
 "use client"
-import useAxiosSecure from '@/hooks/useAxiosSecure';
 import { authClient } from '@/lib/auth-client';
-import { useMeasuredHeight } from '@heroui/react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { success } from 'better-auth';
-import { error } from 'better-auth/api';
 import { Plug, Plus, PlusIcon, SquarePen, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
@@ -13,21 +9,12 @@ import toast, { Toaster } from 'react-hot-toast';
 import Swal from 'sweetalert2';
 
 const MyStartup = () => {
-    const axiosSecure = useAxiosSecure()
+    // const axiosSecure = useAxiosSecure()
     const { data: session } = authClient.useSession();
     const founderName = session?.user?.name
     const userEmail = session?.user?.email
 
-    // const theObject = {
-    //     name: "rahim",
-    //     age: 20,
-    //     status: "bekar"
-    // }
-
-    // const age = theObject.age
-    // const { status, name } = theObject
-    // async use korar jonno tmr dekhte hbe await kon function ar under a lekha 
-
+    
 
     const { data, isLoading, refetch } = useQuery({
         queryKey: ["my-startup"],
@@ -145,7 +132,7 @@ const MyStartup = () => {
 
 
         toast.promise(
-            axiosSecure.post("https://venture-connect-server-kappa.vercel.app/startups", data)
+            axios.post("https://venture-connect-server-kappa.vercel.app/startups", data)
             , {
                 loading: "Creating Startup Profile",
                 success: () => {
