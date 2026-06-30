@@ -20,7 +20,7 @@ const OpportunityDetailsPage = () => {
     const { data: application, isLoading: applicationLoading } = useQuery({
         queryKey: ["application", id],
         queryFn: async () => {
-            const result = await axios.get(`http://localhost:8000/applications?userEmail=${userEmail}`)
+            const result = await axios.get(`https://venture-connect-server-kappa.vercel.app/applications?userEmail=${userEmail}`)
             console.log(result)
             return result.data
         },
@@ -31,7 +31,7 @@ const OpportunityDetailsPage = () => {
     const { data, isLoading } = useQuery({ // specific opportunity
         queryKey: ["opportunity-details", id],
         queryFn: async () => {
-            const result = await axios.get(`http://localhost:8000/opportunity/${id}`)
+            const result = await axios.get(`https://venture-connect-server-kappa.vercel.app/opportunity/${id}`)
             return result.data
         }
     })
@@ -68,7 +68,7 @@ const OpportunityDetailsPage = () => {
         const applicationData = Object.fromEntries(formData)
 
         toast.promise(
-            axios.post("http://localhost:8000/applications", applicationData),
+            axios.post("https://venture-connect-server-kappa.vercel.app/applications", applicationData),
             {
                 loading: "Applying",
                 success: () => {

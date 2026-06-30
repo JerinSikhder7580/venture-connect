@@ -9,7 +9,7 @@ const FeatureOpportunities = () => {
     const { data, isLoading } = useQuery({
         queryKey: ["featured-opportunity"],
         queryFn: async () => {
-            const result = await axios.get(`http://localhost:8000/featured-opportunity`)
+            const result = await axios.get(`https://venture-connect-server-kappa.vercel.app/featured-opportunity`)
             return result.data
 
         }

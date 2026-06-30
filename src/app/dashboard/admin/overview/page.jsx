@@ -9,7 +9,7 @@ const AdminOverview = () => {
     const { data: overview, isLoading, isError } = useQuery({
         queryKey: ["admin-overview"],
         queryFn: async () => {
-            const result = await axios.get("http://localhost:8000/admin/dashboard");
+            const result = await axios.get("https://venture-connect-server-kappa.vercel.app/admin/dashboard");
             return result.data;
         }
     });

@@ -40,7 +40,7 @@ const BrowseStartups = () => {
 
         queryFn: async () => {
 
-            const result = await axios.get(`http://localhost:8000/startups?status=accept&search=${search}&filter=${filter}`)
+            const result = await axios.get(`https://venture-connect-server-kappa.vercel.app/startups?status=accept&search=${search}&filter=${filter}`)
 
             return result.data
 

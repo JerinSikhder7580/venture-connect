@@ -34,7 +34,7 @@ const ManageOpportunity = () => {
     const { data, isLoading, refetch } = useQuery({
         queryKey: ["manage-opportunity"],
         queryFn: async () => {
-            const result = await axios.get(`http://localhost:8000/opportunity?userEmail=${userEmail}`)
+            const result = await axios.get(`https://venture-connect-server-kappa.vercel.app/opportunity?userEmail=${userEmail}`)
             return result.data
         },
         enabled: userEmail ? true : false
@@ -54,7 +54,7 @@ const ManageOpportunity = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 toast.promise(
-                    axios.delete(`http://localhost:8000/opportunity/${id}`),
+                    axios.delete(`https://venture-connect-server-kappa.vercel.app/opportunity/${id}`),
                     {
                         loading: "Deleting",
                         success: () => {
@@ -75,7 +75,7 @@ const ManageOpportunity = () => {
 
 
         toast.promise(async () => {
-            const result = await axios.patch(`http://localhost:8000/opportunity?id=${id}`, formData)
+            const result = await axios.patch(`https://venture-connect-server-kappa.vercel.app/opportunity?id=${id}`, formData)
             return result.data
         },
             {

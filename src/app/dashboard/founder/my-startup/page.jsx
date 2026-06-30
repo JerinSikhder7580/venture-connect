@@ -30,7 +30,7 @@ const MyStartup = () => {
     const { data, isLoading, refetch } = useQuery({
         queryKey: ["my-startup"],
         queryFn: async () => {
-            const result = await axios.get(`http://localhost:8000/startups?userEmail=${userEmail}`)
+            const result = await axios.get(`https://venture-connect-server-kappa.vercel.app/startups?userEmail=${userEmail}`)
             return result.data?.[0]
         },
         enabled: userEmail ? true : false
@@ -105,7 +105,7 @@ const MyStartup = () => {
         }).then(result => {
             if (result.isConfirmed) {
                 toast.promise(
-                    axios.delete(`http://localhost:8000/startups?userEmail=${userEmail}`),
+                    axios.delete(`https://venture-connect-server-kappa.vercel.app/startups?userEmail=${userEmail}`),
                     {
                         loading: "Deleting",
                         success: async () => {
@@ -143,7 +143,7 @@ const MyStartup = () => {
 
 
         toast.promise(
-            axios.post("http://localhost:8000/startups", data)
+            axios.post("https://venture-connect-server-kappa.vercel.app/startups", data)
             , {
                 loading: "Creating Startup Profile",
                 success: () => {
@@ -196,7 +196,7 @@ const MyStartup = () => {
         }
         modalElement.current.close()
         toast.promise(
-            axios.patch(`http://localhost:8000/startup/${data._id}`, formData),
+            axios.patch(`https://venture-connect-server-kappa.vercel.app/startup/${data._id}`, formData),
             {
                 loading: "Updating Data",
                 success: () => {
@@ -464,11 +464,5 @@ const MyStartup = () => {
 };
 
 export default MyStartup;
-{/* Startup Name
-Logo (must be upload as file by using imgbb)
-Industry
-Description
-Funding Stage
-Founder Email
- */}
+
 

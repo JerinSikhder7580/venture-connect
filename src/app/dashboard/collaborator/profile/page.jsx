@@ -15,7 +15,7 @@ const CollaboratorProfilePage = () => {
     const { data, isLoading, refetch } = useQuery({
         queryKey: ["my-profile", userEmail],
         queryFn: async () => {
-            const result = await axios.get(`http://localhost:8000/user?email=${userEmail}`)
+            const result = await axios.get(`https://venture-connect-server-kappa.vercel.app/user?email=${userEmail}`)
             return result.data
         },
         enabled: userEmail ? true : false
@@ -35,7 +35,7 @@ const CollaboratorProfilePage = () => {
 
 
         toast.promise(
-            axios.patch(`http://localhost:8000/user?email=${userEmail}`, formData),
+            axios.patch(`https://venture-connect-server-kappa.vercel.app/user?email=${userEmail}`, formData),
             {
                 loading: "Updating profile",
                 success: async () => {

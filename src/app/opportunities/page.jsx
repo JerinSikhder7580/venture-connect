@@ -66,7 +66,7 @@ const Opportunities = () => {
     const { data, isLoading } = useQuery({
         queryKey: ["all-opportunity", search, workType, industry, pageState],
         queryFn: async () => {
-            const result = await axios.get(`http://localhost:8000/opportunity?search=${search}&workType=${workType}&industry=${industry}&limit=${limit}&skip=${(pageState - 1) * limit}`)
+            const result = await axios.get(`https://venture-connect-server-kappa.vercel.app/opportunity?search=${search}&workType=${workType}&industry=${industry}&limit=${limit}&skip=${(pageState - 1) * limit}`)
             if (result?.data?.dataCount && !search) {
                 handleOpportunityCount(result.data.dataCount)
             }

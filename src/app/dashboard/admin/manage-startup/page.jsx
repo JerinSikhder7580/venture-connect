@@ -10,7 +10,7 @@ const ManageStartupPost = () => {
         queryFn: async () => {
             console.log("working");
             const result = await axios.get(
-                "http://localhost:8000/startups?status=pending"
+                "https://venture-connect-server-kappa.vercel.app/startups?status=pending"
             );
             return result.data;
         },
@@ -19,7 +19,7 @@ const ManageStartupPost = () => {
    
     const handleStatus = (id, status) => {
         toast.promise(
-            axios.patch(`http://localhost:8000/startup/${id}`, { status }),
+            axios.patch(`https://venture-connect-server-kappa.vercel.app/startup/${id}`, { status }),
             {
                 loading: `${status}ing`,
                 success: () => {

@@ -10,7 +10,7 @@ const useRole = () => {
     const { data: role, isLoading: roleLoading } = useQuery({
         queryKey: ["role"],
         queryFn: async () => {
-            const result = await axios.get(`http://localhost:8000/role?email=${userEmail}`)
+            const result = await axios.get(`https://venture-connect-server-kappa.vercel.app/role?email=${userEmail}`)
             return result.data?.role
         },
         enabled: userEmail ? true : false

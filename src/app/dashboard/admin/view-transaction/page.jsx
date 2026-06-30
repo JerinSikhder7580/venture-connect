@@ -18,7 +18,7 @@ const ViewTransaction = () => {
     const { data: transactions, isLoading, isError } = useQuery({
         queryKey: ["transactions"],
         queryFn: async () => {
-            const result = await axios.get("http://localhost:8000/payments");
+            const result = await axios.get("https://venture-connect-server-kappa.vercel.app/payments");
             return result.data;
         }
     });

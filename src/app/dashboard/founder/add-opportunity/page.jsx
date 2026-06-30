@@ -40,7 +40,7 @@ const PostTeamRequirements = () => {
     const { data: startup, isLoading } = useQuery({
         queryKey: ['isStartup'],
         queryFn: async () => {
-            const result = await axios.get(`http://localhost:8000/isStartup?userEmail=${userEmail}`)
+            const result = await axios.get(`https://venture-connect-server-kappa.vercel.app/isStartup?userEmail=${userEmail}`)
             return result.data
         },
         enabled: !!userEmail
@@ -55,7 +55,7 @@ const PostTeamRequirements = () => {
 
         queryFn: async () => {
 
-            const result = await axios.get(`http://localhost:8000/user?email=${userEmail}`)
+            const result = await axios.get(`https://venture-connect-server-kappa.vercel.app/user?email=${userEmail}`)
 
             return result.data
         },
@@ -118,7 +118,7 @@ const PostTeamRequirements = () => {
 
             async () => {
 
-                const result = await axios.post(`http://localhost:8000/opportunity?email=${userEmail}`, data)
+                const result = await axios.post(`https://venture-connect-server-kappa.vercel.app/opportunity?email=${userEmail}`, data)
 
                 return result.data
 

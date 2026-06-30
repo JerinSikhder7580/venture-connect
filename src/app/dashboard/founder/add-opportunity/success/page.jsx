@@ -34,7 +34,7 @@ export default async function Success({ searchParams }) {
             amount: session.amount_total,
 
         }
-        await axios.post("http://localhost:8000/payments", payments)
+        await axios.post("https://venture-connect-server-kappa.vercel.app/payments", payments)
 
         const amount = new Intl.NumberFormat("en", {
             style: "currency",

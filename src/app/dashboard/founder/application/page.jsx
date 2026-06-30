@@ -11,7 +11,7 @@ const Application = () => {
     const { data: startup, isLoading: startupLoading } = useQuery({
         queryKey: ["my-startup"],
         queryFn: async () => {
-            const result = await axios.get(`http://localhost:8000/startups?userEmail=${userEmail}`)
+            const result = await axios.get(`https://venture-connect-server-kappa.vercel.app/startups?userEmail=${userEmail}`)
             return result.data?.[0]
 
         },
@@ -21,7 +21,7 @@ const Application = () => {
     const { data: applications, isLoading: applicationsLoading, refetch } = useQuery({
         queryKey: ["application"],
         queryFn: async () => {
-            const result = await axios.get(`http://localhost:8000/applications?startupName=${startup.name}`)
+            const result = await axios.get(`https://venture-connect-server-kappa.vercel.app/applications?startupName=${startup.name}`)
             return result.data
         },
         enabled: startup?.length !== 0 ? true : false
@@ -33,7 +33,7 @@ const Application = () => {
 
 
         toast.promise(
-            axios.patch(`http://localhost:8000/application?status=${status}&id=${id}`),
+            axios.patch(`https://venture-connect-server-kappa.vercel.app/application?status=${status}&id=${id}`),
             {
                 loading: "Updating",
                 success: () => {

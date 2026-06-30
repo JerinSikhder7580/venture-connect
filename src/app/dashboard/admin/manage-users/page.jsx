@@ -17,7 +17,7 @@ const ManageUsers = () => {
 
         queryFn: async () => {
 
-            const result = await axios.get("http://localhost:8000/users");
+            const result = await axios.get("https://venture-connect-server-kappa.vercel.app/users");
 
             return result.data;
 
@@ -57,7 +57,7 @@ const ManageUsers = () => {
 
         toast.promise(
 
-            axios.patch(`http://localhost:8000/user?id=${id}&status=${!currentStatus}`),
+            axios.patch(`https://venture-connect-server-kappa.vercel.app/user?id=${id}&status=${!currentStatus}`),
 
             {
 

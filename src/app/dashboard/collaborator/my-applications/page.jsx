@@ -11,7 +11,7 @@ const MyApplicationsPage = () => {
     const { data: applications, isLoading } = useQuery({
         queryKey: ["my-application"],
         queryFn: async () => {
-            const result = await axios.get(`http://localhost:8000/applications?userEmail=${userEmail}`)
+            const result = await axios.get(`https://venture-connect-server-kappa.vercel.app/applications?userEmail=${userEmail}`)
             console.log(result.data)
             return result.data
         },
