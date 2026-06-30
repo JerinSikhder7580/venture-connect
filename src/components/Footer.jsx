@@ -61,9 +61,12 @@ const Footer = () => {
               <BsTwitterX size={22} />
 
 
+
             </div>
 
           </div>
+
+
 
 
           {/* Quick Links */}
@@ -86,22 +89,22 @@ const Footer = () => {
 
 
               <li>
-                <a
+                <Link
                   href="/startups"
                   className="hover:text-cyan-400 transition"
                 >
                   Browse Startups
-                </a>
+                </Link>
               </li>
 
 
               <li>
-                <a
+                <Link
                   href="/opportunities"
                   className="hover:text-cyan-400 transition"
                 >
                   Opportunities
-                </a>
+                </Link>
               </li>
 
 

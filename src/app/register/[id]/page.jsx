@@ -35,7 +35,6 @@ export default function Register() {
     const [visiblePass, setVisiblePass] = useState(false)
 
 
-    // 142536789zaqZAQ
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -94,10 +93,8 @@ export default function Register() {
                                 id='image'
                                 name='image'
 
-                                // {...register("image", { required: "Image is required" })}
 
                                 accept='image/*'
-                                // className='w-full border border-gray-200 rounded-lg px-4 py-3 outline-none focus:ring-1 focus:ring-[#00d3f2]'
                                 className='invisible'
 
                             />
