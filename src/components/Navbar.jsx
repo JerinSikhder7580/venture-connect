@@ -12,9 +12,10 @@ import useRole from "@/hooks/useRole";
 const Navbar = () => {
     const router = useRouter()
     const [dropdown, setDropdown] = useState(false) // 
+    const [resDropdown, setResDropdown] = useState(false)
     const pathname = usePathname()
     const { data: session } = authClient.useSession();
-    const {role} = useRole()
+    const { role } = useRole()
 
     const user = session?.user;
 
@@ -59,6 +60,7 @@ const Navbar = () => {
             if (result.isConfirmed) {
 
                 await authClient.signOut()
+                setDropdown(false)
                 router.push("/login")
 
 
@@ -73,22 +75,47 @@ const Navbar = () => {
     return (
         <nav className="bg-white dark-bg shadow-sm sticky top-0 z-50">
 
-            <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div className="max-w-7xl mx-auto px-2.5 py-4 flex items-center justify-between">
 
 
                 {/* Logo */}
+                <div className=" flex items-center justify-center gap-2">
+                    <div className="relative">
+                        <button onClick={() => setResDropdown(!resDropdown)} className="md:hidden">
+                            <Menu color="#00d3f2" />
+                        </button>
 
-                <Link href="/" className="flex items-center gap-2">
 
-                    <div className="bg-cyan-400 p-2 rounded-lg">
-                        <Rocket size={22} className="text-white" />
+                        {resDropdown &&
+                            <div className="absolute border bg-[#00142c] flex flex-col  gap-2 top-10">
+
+                                {
+                                    navLinks.map((link) => (
+                                        <Link
+                                            key={link.name}
+                                            href={link.path}
+                                            className={`text-cyan-400 w-max block hover:text-[#ff7900] transition ${pathname === link.path ? "active" : ""}`}
+                                        >
+                                            {link.name}
+                                        </Link>
+                                    ))
+                                }
+
+                            </div>}
                     </div>
 
-                    <h1 className="text-2xl font-bold primary-text">
-                        Venture<span className="text-cyan-400">Connect</span>
-                    </h1>
+                    <Link href="/" className="flex items-center gap-2">
 
-                </Link>
+                        <div className="bg-cyan-400 p-2 rounded-lg">
+                            <Rocket size={22} className="text-white" />
+                        </div>
+
+                        <h1 className="text-2xl font-bold primary-text">
+                            Venture<span className="text-cyan-400">Connect</span>
+                        </h1>
+
+                    </Link>
+                </div>
 
 
 
@@ -115,7 +142,7 @@ const Navbar = () => {
 
                 {/* Auth Button */}
 
-                <div className="hidden md:flex items-center gap-3">
+                <div className="flex items-center gap-3">
 
 
                     {
@@ -153,12 +180,16 @@ const Navbar = () => {
                                                 </div>
                                             </div>
                                             <div>
+
                                                 {/* <div> */}
                                                 <div className="flex">
                                                     <Link href={`/dashboard/${role}/overview`} onClick={() => setDropdown(false)} className="btn w-full mb-2 bg-[#4f72a0] border border-[#00112c]"><LayoutDashboard size={16} /> Dashboard</Link>
                                                 </div>
-                                                <Link href={"/dashboard/collaborator/profile"} onClick={() => setDropdown(false)} className="btn w-full bg-[#f59d51] mb-2 border border-[#ff7900]"><ShieldPlus size={16} /> Profile</Link>
-                                                {/* </div> */}
+
+                                                {
+                                                    role === "collaborator" &&
+                                                    <Link href={"/dashboard/collaborator/profile"} onClick={() => setDropdown(false)} className="btn w-full bg-[#f59d51] mb-2 border border-[#ff7900]"><ShieldPlus size={16} /> Profile</Link>
+                                                }                                                {/* </div> */}
                                                 <button onClick={handleSignOut} className="btn w-full bg-cyan-200 mb-2 border border-[#00d3f2]"><LogOut size={16} /> LogOut</button>
                                             </div>
 
@@ -212,7 +243,7 @@ const Navbar = () => {
             </div>
 
 
-
+            {/* 
             {
                 user && (
 
@@ -284,7 +315,7 @@ const Navbar = () => {
                     </div>
 
                 )
-            }
+            } */}
 
 
         </nav>

@@ -1,13 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Mail, User, Chrome } from "lucide-react";
+import { ArrowLeft, Mail, User, Chrome, EyeClosed, Eye } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { authClient } from "@/lib/auth-client";
 import { router } from "better-auth/api";
 import { useRouter } from "next/navigation";
+import toast, { Toaster } from "react-hot-toast";
+import { useRef, useState } from "react";
 
 export default function LoginPage() {
+
+    const [visiblePass, setVisiblePass] = useState(false)
     const router = useRouter()
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -18,6 +22,9 @@ export default function LoginPage() {
         const { data: result, error } = await authClient.signIn.email(newFormData)
         if (result) {
             router.push("/")
+        }
+        if (error) {
+            toast.error(error.message)
         }
 
 
@@ -37,6 +44,7 @@ export default function LoginPage() {
 
     return (
         <div className="min-h-screen dark-bg flex items-center justify-center px-5">
+            <Toaster />
 
             <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
 
@@ -68,11 +76,17 @@ export default function LoginPage() {
 
                     <div>
                         <label className="text-sm font-medium text-gray-700">Password</label>
+                        <div>
 
-                        <div className="flex items-center border rounded-lg mt-2 px-3 focus-within:ring-2 focus-within:ring-[#00d3f2]">
-                            <Mail size={20} className="text-gray-400" />
+                            <div className="flex items-center border rounded-lg mt-2 px-3 focus-within:ring-2 focus-within:ring-[#00d3f2]">
+                                <Mail size={20} className="text-gray-400" />
+                                <input name="password" type={visiblePass ? "text" : "password"} placeholder="Enter your password" className="w-full px-3 py-3 outline-none" />
+                                <button type="button" onClick={() => setVisiblePass(!visiblePass)}>
 
-                            <input name="password" type="password" placeholder="Enter your password" className="w-full px-3 py-3 outline-none" />
+                                    {visiblePass ? <Eye /> :
+                                        <EyeClosed />}
+                                </button>
+                            </div>
                         </div>
                     </div>
 

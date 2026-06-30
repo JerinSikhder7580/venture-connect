@@ -3,7 +3,7 @@
 import { authClient } from '@/lib/auth-client';
 import { Button, Card, Form } from '@heroui/react';
 import axios from 'axios';
-import { Plus } from 'lucide-react';
+import { Eye, EyeClosed, Mail, Plus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
@@ -32,6 +32,7 @@ export default function Register() {
         const url = URL.createObjectURL(formData.get("image")) // convert to url. its need obj
         setImageUrl(url)
     }
+    const [visiblePass, setVisiblePass] = useState(false)
 
 
     // 142536789zaqZAQ
@@ -47,7 +48,7 @@ export default function Register() {
         console.log(data.data.url)
         formData.append("image", data.data.url)
         formData.append("role", id.id)
-        formData.append('opportunity',3)
+        formData.append('opportunity', 3)
 
 
         const newFormData = Object.fromEntries(formData)
@@ -152,23 +153,21 @@ export default function Register() {
 
 
 
+
                         <div>
-                            <label>Password</label>
-                            <input type="password"
-                                name='password'
-                                placeholder='enter your password here'
+                            <label className="text-sm font-medium text-gray-700">Password</label>
+                            <div>
 
-                                accept='image/*'
-                                className='w-full border border-gray-200 rounded-lg px-4 py-3 outline-none focus:ring-1 focus:ring-[#00d3f2]'
+                                <div className="flex items-center border rounded-lg mt-2 px-3 focus-within:ring-2 focus-within:ring-[#00d3f2]">
+                                    <Mail size={20} className="text-gray-400" />
+                                    <input name="password" type={visiblePass ? "text" : "password"} placeholder="Enter your password" className="w-full px-3 py-3 outline-none" />
+                                    <button type="button" onClick={() => setVisiblePass(!visiblePass)}>
 
-                            />
-                            <ul className='list-disc ml-5 text-sm text-gray-500 mt-3'>
-                                <li>Minimum 6 characters</li>
-                                <li>At least 1 uppercase letter</li>
-                                <li>At least 1 lowercase letter</li>
-
-                            </ul>
-
+                                        {visiblePass ? <Eye /> :
+                                            <EyeClosed />}
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
                         <Button
