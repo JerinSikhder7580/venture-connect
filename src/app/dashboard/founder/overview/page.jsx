@@ -1,5 +1,6 @@
 "use client"
 import useUserEmail from '@/hooks/useUserEmail';
+import { useMeasuredHeight } from '@heroui/react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { User } from 'lucide-react';
@@ -17,6 +18,8 @@ const FounderOverviewPage = () => {
         enabled: userEmail ? true : false
     })
     console.log(startup)
+    console.log(userEmail)
+
 
 
     const { data, isLoading } = useQuery({
@@ -31,7 +34,8 @@ const FounderOverviewPage = () => {
     if (startupLoading || isLoading) {
         return <div className="flex items-center justify-center p-8"><span className="loading loading-spinner text-success"></span></div>
     }
-    if (!data) return
+    // if (!data) return
+
 
 
     return (
@@ -64,7 +68,7 @@ const FounderOverviewPage = () => {
 
                     <div>
                         <h2 class="text-4xl font-bold text-white">
-                            {data.opportunityCount}
+                            {data?.opportunityCount || 0}
                         </h2>
 
                         <p class="text-gray-400 mt-1">
@@ -94,7 +98,7 @@ const FounderOverviewPage = () => {
                     <div>
 
                         <h2 class="text-4xl font-bold text-white">
-                            {data.applicationCount}
+                            {data?.applicationCount || 0}
                         </h2>
 
                         <p class="text-gray-400 mt-1">
@@ -133,7 +137,7 @@ const FounderOverviewPage = () => {
                     <div>
 
                         <h2 class="text-4xl font-bold text-white">
-                            {data.acceptedApplication}
+                            {data?.acceptedApplication || 0}
                         </h2>
 
 
