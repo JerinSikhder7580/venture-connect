@@ -16,8 +16,7 @@ const ManageStartupPost = () => {
         },
     });
 
-    // http method: patch
-    // api name: startup
+   
     const handleStatus = (id, status) => {
         toast.promise(
             axios.patch(`http://localhost:8000/startup/${id}`, { status }),

@@ -7,24 +7,9 @@ import Image from 'next/image';
 import { useMemo, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
-// const sampleUsers = [
-//     {
-//         _id: "6a36c2f614242a1b2d9980d4",
-//         name: "Colby Duran",
-//         email: "qoxu@mailinator.com",
-//         emailVerified: false,
-//         image: "https://i.ibb.co/FqVZ2qZN/banner.jpg",
-//         isBlocked: false,
-//         opportunity: 3,
-//         plan: "free",
-//         role: "founder",
-//         createdAt: "2026-06-20T16:42:30.337Z",
-//         updatedAt: "2026-06-20T16:42:30.337Z",
-//     },
-// ];
+
 
 const ManageUsers = () => {
-    // const [blockedUsers, setBlockedUsers] = useState({});
 
     const { data: users, isLoading, isError, refetch } = useQuery({
         queryKey: ["all-users"],
