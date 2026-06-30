@@ -1,5 +1,4 @@
 "use client"
-import useAxiosSecure from '@/hooks/useAxiosSecure';
 import useUserEmail from '@/hooks/useUserEmail';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -17,16 +16,18 @@ const FounderOverviewPage = () => {
         },
         enabled: userEmail ? true : false
     })
+    console.log(startup)
 
 
     const { data, isLoading } = useQuery({
         queryKey: ["admin-overview"],
         queryFn: async () => {
-            const result = await axios.get(`http://localhost:8000/founder/dashboard?email=${userEmail}&startupName=${startup.name}`)
+            const result = await axios.get(`https://venture-connect-server-kappa.vercel.app/founder/dashboard?email=${userEmail}&startupName=${startup.name}`)
             return result.data
         },
         enabled: !!userEmail && !!startup
     })
+    console.log(data)
     if (startupLoading || isLoading) {
         return <div className="flex items-center justify-center p-8"><span className="loading loading-spinner text-success"></span></div>
     }
@@ -40,7 +41,7 @@ const FounderOverviewPage = () => {
 
 
                 <p class="mt-3 text-gray-400 text-lg">
-                    Here&apos;s an overview of your startup activity.
+                    Here's an overview of your startup activity.
                 </p>
             </div>
 
