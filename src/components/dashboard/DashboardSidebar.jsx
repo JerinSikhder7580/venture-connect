@@ -52,10 +52,7 @@ export default async function DashboardSidebar() {
         <div className="p-6 border" >
 
             <Drawer  >
-                {/* <Button className={'md:hidden sm:block'} variant="secondary">
-                    <Bars />
-                    Menu
-                </Button> */}
+                
                 <div className="flex items-center justify-center">
 
                     <Link href="/" className="flex items-center gap-2">
