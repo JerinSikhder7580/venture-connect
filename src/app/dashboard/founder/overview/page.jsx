@@ -8,7 +8,6 @@ import React from 'react';
 
 const FounderOverviewPage = () => {
     const userEmail = useUserEmail()
-    const axiosSecure = useAxiosSecure()
 
     const { data: startup, isLoading: startupLoading } = useQuery({
         queryKey: ["my-startup"],
@@ -23,7 +22,7 @@ const FounderOverviewPage = () => {
     const { data, isLoading } = useQuery({
         queryKey: ["admin-overview"],
         queryFn: async () => {
-            const result = await axiosSecure.get(`http://localhost:8000/founder/dashboard?email=${userEmail}&startupName=${startup.name}`)
+            const result = await axios.get(`http://localhost:8000/founder/dashboard?email=${userEmail}&startupName=${startup.name}`)
             return result.data
         },
         enabled: !!userEmail && !!startup
