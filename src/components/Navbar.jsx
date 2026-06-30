@@ -10,6 +10,7 @@ import { usePathname, useRouter } from "next/navigation";
 import useRole from "@/hooks/useRole";
 
 const Navbar = () => {
+
     const router = useRouter()
     const [dropdown, setDropdown] = useState(false) // 
     const [resDropdown, setResDropdown] = useState(false)
@@ -43,10 +44,13 @@ const Navbar = () => {
 
 
 
-    const handleSignOut = (e) => {
-        e.stopPropagation()
-        e.preventDefault()
-        e.stop
+    const handleSignOut = async (e) => {
+        const { token } = await authClient.getAccessToken()
+        console.log(token)
+
+        // e.stopPropagation()
+        // e.preventDefault()
+        // e.stop
 
         Swal.fire({
             title: "Are you sure?",

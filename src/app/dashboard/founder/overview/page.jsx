@@ -1,4 +1,5 @@
 "use client"
+import useAxiosSecure from '@/hooks/useAxiosSecure';
 import useUserEmail from '@/hooks/useUserEmail';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -7,13 +8,13 @@ import React from 'react';
 
 const FounderOverviewPage = () => {
     const userEmail = useUserEmail()
+    const axiosSecure = useAxiosSecure()
 
     const { data: startup, isLoading: startupLoading } = useQuery({
         queryKey: ["my-startup"],
         queryFn: async () => {
             const result = await axios.get(`https://venture-connect-server-kappa.vercel.app/startups?userEmail=${userEmail}`)
             return result.data?.[0]
-
         },
         enabled: userEmail ? true : false
     })
@@ -22,7 +23,7 @@ const FounderOverviewPage = () => {
     const { data, isLoading } = useQuery({
         queryKey: ["admin-overview"],
         queryFn: async () => {
-            const result = await axios.get(`https://venture-connect-server-kappa.vercel.app/founder/dashboard?email=${userEmail}&startupName=${startup.name}`)
+            const result = await axiosSecure.get(`http://localhost:8000/founder/dashboard?email=${userEmail}&startupName=${startup.name}`)
             return result.data
         },
         enabled: !!userEmail && !!startup

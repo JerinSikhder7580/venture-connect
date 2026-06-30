@@ -1,4 +1,5 @@
 "use client"
+import useAxiosSecure from '@/hooks/useAxiosSecure';
 import { authClient } from '@/lib/auth-client';
 import { useMeasuredHeight } from '@heroui/react';
 import { useQuery } from '@tanstack/react-query';
@@ -12,6 +13,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import Swal from 'sweetalert2';
 
 const MyStartup = () => {
+    const axiosSecure = useAxiosSecure()
     const { data: session } = authClient.useSession();
     const founderName = session?.user?.name
     const userEmail = session?.user?.email
@@ -133,7 +135,7 @@ const MyStartup = () => {
         formData.append("image", theData.data.data.url)
         formData.append("userEmail", userEmail)
         formData.append("status", "pending")
-        formData.append("founderName",founderName)
+        formData.append("founderName", founderName)
 
 
         const data = Object.fromEntries(formData.entries())
@@ -143,7 +145,7 @@ const MyStartup = () => {
 
 
         toast.promise(
-            axios.post("https://venture-connect-server-kappa.vercel.app/startups", data)
+            axiosSecure.post("https://venture-connect-server-kappa.vercel.app/startups", data)
             , {
                 loading: "Creating Startup Profile",
                 success: () => {

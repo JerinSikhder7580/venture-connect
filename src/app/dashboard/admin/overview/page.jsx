@@ -17,7 +17,6 @@ const AdminOverview = () => {
     if (!overview) return
 
 
-    // const overview = data || fallbackOverview;
 
     const stats = [
         {
